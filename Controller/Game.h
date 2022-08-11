@@ -61,6 +61,7 @@ private:
     std::string getUserInput();
     std::string getUserInput(int index);
     void setupNewPlayers();
+    bool validateInput(Validation validation);
 };
 
 #endif // ASSIGN2_GAME_H

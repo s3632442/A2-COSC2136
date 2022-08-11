@@ -359,7 +359,6 @@ void Game::takeTurn(Player *&whoseTurnItIs)
     {
         int wordCount = 0;
         std::string user_input = "";
-        // user_input = getUserInput();
 
         std::cin >> std::ws;
         std::getline(std::cin, user_input);
@@ -463,7 +462,8 @@ void Game::takeTurn(Player *&whoseTurnItIs)
                 }
                 else if (firstWord == "replace")
                 {
-                    std::cout << "YOU TYPED: replace TILE" << std::endl;
+                    std::string secondWord = tokenisedInput.at(1);
+                    std::cout << "YOU TYPED: replace " << secondWord << std::endl;
                     inputIsInvalid = false;
                 }
                 else if (firstWord == "save")
