@@ -44,6 +44,8 @@ private:
     LinkedList *bag;
     Validation *validation;
     ScoringSystem *scoringSystem;
+    Tile *tempTile;
+    LinkedList *hand;
 
     void saveGame(std::string *&filename);
     void play();

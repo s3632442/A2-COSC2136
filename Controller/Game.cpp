@@ -406,7 +406,7 @@ void Game::takeTurn(Player *&whoseTurnItIs)
                     Colour colour = tile_colour_shape.at(0);
                     Shape shape = tile_colour_shape.at(1) - ASCII_NUMERIC_OFFSET;
 
-                    Tile *tempTile = new Tile(colour, shape);
+                    tempTile = new Tile(colour, shape);
                     LinkedList *hand = whoseTurnItIs->getHand();
                     if (hand->nodeExists(*tempTile))
                     {
@@ -464,6 +464,17 @@ void Game::takeTurn(Player *&whoseTurnItIs)
                 {
                     std::string secondWord = tokenisedInput.at(1);
                     std::cout << "YOU TYPED: replace " << secondWord << std::endl;
+
+                std::transform(secondWord.begin(), secondWord.end(), secondWord.begin(), ::toupper);
+
+                    Colour colour = secondWord.at(0);
+                    Shape shape = secondWord.at(1) - ASCII_NUMERIC_OFFSET;
+
+                    tempTile = new Tile(colour, shape);
+                    hand = whoseTurnItIs->getHand();
+                    hand->removeNodeContaining(tempTile);
+                    hand->addEnd(bag->removeFront());
+                    bag->addEnd(tempTile);
                     inputIsInvalid = false;
                 }
                 else if (firstWord == "save")
