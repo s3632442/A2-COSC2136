@@ -186,7 +186,7 @@ void Game::loadGame()
 
 void Game::play()
 {
-    Player *whoseTurnItIs = nullptr;
+    Player *currentPlayer = nullptr;
     bool exiting = false;
 
     // Play until:
@@ -194,23 +194,23 @@ void Game::play()
     // 2. Tiles depleted
     do
     {
-        printWhoseTurnItIs(whoseTurnItIs);
+        printCurrentPlayer(currentPlayer);
         printScores();
         printBoard();
-        printHand(whoseTurnItIs);
+        printHand(currentPlayer);
         printBagTileCount();
         promptForPlayInput();
-        takeTurn(whoseTurnItIs);
+        takeTurn(currentPlayer);
 
         std::string *ouputFilename = new std::string("testOutput20220806141535.txt");
         saveGame(ouputFilename);
 
-        exiting = checkEndGameConditions(whoseTurnItIs);
+        exiting = checkEndGameConditions(currentPlayer);
 
         if (exiting)
         {
             // End of game.
-            whoseTurnItIs->addToScore(50); // what was the bonus for finishing tiles?
+            currentPlayer->addToScore(50); // what was the bonus for finishing tiles?
             std::cout << "WINNER IS ? " << std::endl;
             printScores();
         }
@@ -339,7 +339,7 @@ void Game::promptForPlayInput()
 
 // 20220802
 // https : // stackoverflow.com/questions/16276176/can-i-modify-the-target-of-a-pointer-passed-as-parameter
-void Game::printWhoseTurnItIs(Player *&whoseTurnItIs)
+void Game::printCurrentPlayer(Player *&whoseTurnItIs)
 {
     if (*itIsPlayer1s_turn)
     {
@@ -456,27 +456,37 @@ void Game::takeTurn(Player *&whoseTurnItIs)
             else if (wordCount == 2)
             {
                 std::string firstWord = tokenisedInput.at(0);
+                std::string secondWord = tokenisedInput.at(1);
                 if (firstWord != "replace" && firstWord != "save")
                 {
                     prompt_invalidInput();
                 }
                 else if (firstWord == "replace")
                 {
-                    std::string secondWord = tokenisedInput.at(1);
                     std::cout << "YOU TYPED: replace " << secondWord << std::endl;
-
-                std::transform(secondWord.begin(), secondWord.end(), secondWord.begin(), ::toupper);
-
+                    std::transform(secondWord.begin(), secondWord.end(), secondWord.begin(), ::toupper);
                     Colour colour = secondWord.at(0);
                     Shape shape = secondWord.at(1) - ASCII_NUMERIC_OFFSET;
-
                     tempTile = new Tile(colour, shape);
                     hand = whoseTurnItIs->getHand();
-                    hand->removeNodeContaining(tempTile);
-                    hand->addEnd(bag->removeFront());
-                    bag->addEnd(tempTile);
-                    inputIsInvalid = false;
+                    if (hand->nodeExists(*tempTile))
+                    {
+
+                        hand->removeNodeContaining(tempTile);
+                        hand->addEnd(bag->removeFront());
+                        bag->addEnd(tempTile);
+                        inputIsInvalid = false;
+                    }
+                    else
+                    {
+
+                        std::cout << "That tile is not in your hand\n";
+                        inputIsInvalid = true;
+                        Player *&p = whoseTurnItIs;
+                        takeTurn(p);
+                    }
                 }
+
                 else if (firstWord == "save")
                 {
                     std::cout << "YOU TYPED: save gameFile" << std::endl;

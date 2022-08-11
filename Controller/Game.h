@@ -56,7 +56,7 @@ private:
     void printScores();
     void printBoard();
     void promptForPlayInput();
-    void printWhoseTurnItIs(Player *&);
+    void printCurrentPlayer(Player *&);
     void takeTurn(Player *&);
     bool checkEndGameConditions(Player *&);
     void printBagTileCount();
