@@ -19,8 +19,6 @@ int LinkedList::getLength()
 
 void LinkedList::printAll()
 {
-    std::cout << "--- PRINT NODES ---\n";
-
     Node *temp = head;
 
     if (temp == NULL)

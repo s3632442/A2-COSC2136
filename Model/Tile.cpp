@@ -30,28 +30,27 @@ void Tile::printColourAndShape()
 {
 
     if (this->colour == 'R')
-        std::cout << "RED";
+        std::cout << "RED    : R";
     else if (this->colour == 'O')
-        std::cout << "ORANGE";
+        std::cout << "ORANGE : O";
     else if (this->colour == 'Y')
-        std::cout << "YELLOW";
+        std::cout << "YELLOW : Y";
     else if (this->colour == 'G')
-        std::cout << "GREEN";
+        std::cout << "GREEN  : G";
     else if (this->colour == 'B')
-        std::cout << "BLUE";
+        std::cout << "BLUE   : B";
     else if (this->colour == 'P')
-        std::cout << "PURPLE";
-    std::cout << " : ";
+        std::cout << "PURPLE : P";
     if (this->shape == 1)
-        std::cout << "CIRCLE";
+        std::cout << "1 : CIRCLE";
     else if (this->shape == 2)
-        std::cout << "STAR 4";
+        std::cout << "2 : STAR 4";
     else if (this->shape == 3)
-        std::cout << "DIAMOND";
+        std::cout << "3 : DIAMOND";
     else if (this->shape == 4)
-        std::cout << "SQUARE";
+        std::cout << "4 : SQUARE";
     else if (this->shape == 5)
-        std::cout << "STAR 6";
+        std::cout << "5 : STAR 6";
     else if (this->shape == 6)
-        std::cout << "CLOVER";
+        std::cout << "6 : CLOVER";
 };

@@ -300,40 +300,12 @@ void Game::printHand(Player *&player)
     LinkedList *hand = nullptr;
     if (player->getHand() != nullptr)
     {
-        hand = player->getHand();
+        player->getHand()->printAll();
     }
     else
     {
         std::cout << "WHY is Player::getHand() a nullptr?" << std::endl;
     }
-
-    int count = 0;
-    int hand_size = hand->getLength();
-    for (int i = 0; i < hand_size; i++)
-    {
-        Node *node = hand->getNodeByIndex(i);
-        Tile *tile = node->getData();
-        if (tile != nullptr)
-        {
-            // std::cout << "tile != nullptr" << std::endl;
-
-            Colour colour = tile->getColour();
-            Shape shape = tile->getShape();
-            handAsString.push_back(colour);
-            handAsString.push_back(shape + ASCII_NUMERIC_OFFSET);
-            count++;
-            if (count < hand_size)
-            {
-                handAsString.append(",");
-            }
-        }
-        else
-        {
-            // std::cout << "tile == nullptr" << std::endl;
-        }
-    }
-    std::cout << handAsString << std::endl;
-    std::cout << std::endl;
 }
 
 void Game::printScores()
