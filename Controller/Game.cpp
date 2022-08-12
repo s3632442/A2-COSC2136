@@ -227,6 +227,7 @@ void Game::play()
 
 void Game::prompt_invalidInput()
 {
+    printBoard();
     // 20220724
     // https://www.geeksforgeeks.org/tokenizing-a-string-cpp/
     // https://stackoverflow.com/questions/27706443/c-spliting-string-by-delimiters-and-keeping-the-delimiters-in-result
@@ -436,6 +437,7 @@ void Game::takeTurn(Player *&whoseTurnItIs)
                                       << "NOTE: \nTiles must match colour or shape in a vertical or a horizontal line.\n"
                                       << "Tile placement must be within board bounds e.g. A0 to Z25"
                                       << "\n\n> ";
+                            prompt_invalidInput();
                         }
                     }
                     else
@@ -445,8 +447,8 @@ void Game::takeTurn(Player *&whoseTurnItIs)
                         std::string tileAsString = "";
                         tileAsString.push_back(colour);
                         tileAsString.push_back(shape + ASCII_NUMERIC_OFFSET);
-                        // std::cout << "TILE " << tileAsString << " ISN'T IN HAND" << std::endl;
-                        std::cout << "TILE " << tile_colour_shape << " ISN'T IN HAND\n\n> ";
+                        prompt_invalidInput();
+                        std::cout << "TILE " << tile_colour_shape << " ISN'T IN HAND\n";
                     }
                 } // if words entered were parsed within expectations
                 else
