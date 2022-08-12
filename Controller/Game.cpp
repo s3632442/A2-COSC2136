@@ -17,6 +17,7 @@ Game::Game()
     this->itIsPlayer1s_turn = new bool(true);
     this->player1 = new Player();
     this->player2 = new Player();
+    this->currentPlayer = new Player();
     this->board = new Board(ROW_COUNT, COL_COUNT);
     this->bag = new LinkedList();
     this->validation = new Validation();
@@ -31,6 +32,8 @@ Game::~Game()
     player1 = nullptr;
     delete player2;
     player2 = nullptr;
+    delete currentPlayer;
+    currentPlayer = nullptr;
     delete board;
     board = nullptr;
     delete bag;
@@ -186,7 +189,6 @@ void Game::loadGame()
 
 void Game::play()
 {
-    Player *currentPlayer = nullptr;
     bool exiting = false;
 
     // Play until:
@@ -229,7 +231,7 @@ void Game::prompt_invalidInput()
     // https://www.geeksforgeeks.org/tokenizing-a-string-cpp/
     // https://stackoverflow.com/questions/27706443/c-spliting-string-by-delimiters-and-keeping-the-delimiters-in-result
 
-    std::cout << "I'm sorry, Dave. I'm afraid I can't do that." << std::endl;
+    std::cout << "I'm sorry, " << currentPlayer->getName() << ". I'm afraid I can't do that." << std::endl;
     std::cout << "You may replace a tile, place a tile, or save the game" << std::endl;
     std::cout << "> replace P6" << std::endl;
     std::cout << "> place G5 at C4" << std::endl;
@@ -482,8 +484,7 @@ void Game::takeTurn(Player *&whoseTurnItIs)
 
                         std::cout << "That tile is not in your hand\n";
                         inputIsInvalid = true;
-                        Player *&p = whoseTurnItIs;
-                        takeTurn(p);
+                        prompt_invalidInput();
                     }
                 }
 

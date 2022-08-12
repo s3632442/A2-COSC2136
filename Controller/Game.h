@@ -35,10 +35,12 @@ public:
     std::string getBoardAsString();
     void newGame();
     void loadGame();
+    Player getCurentPlayer();
 
 private:
     Player *player1;
     Player *player2;
+    Player *currentPlayer;
     Board *board;
     bool *itIsPlayer1s_turn;
     LinkedList *bag;
