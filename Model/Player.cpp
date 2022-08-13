@@ -51,12 +51,12 @@ LinkedList* Player::getHand()
     return hand;
 }
 
-/*
-void Player::setHand(LinkedList* hand)
+
+void Player::setHand(LinkedList* h)
 {
-    this->hand = hand;
+    this->hand = h;
 }
-*/
+
 
 std::string Player::getHandAsString()
 {

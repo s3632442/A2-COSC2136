@@ -19,7 +19,7 @@ public:
     void setName(std::string);
     Player(Player &other);
     LinkedList* getHand();
-    //void setHand(LinkedList* hand);
+    void setHand(LinkedList* hand);
     std::string getHandAsString();
     void setScore(int);
 

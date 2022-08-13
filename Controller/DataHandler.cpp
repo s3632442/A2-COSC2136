@@ -23,7 +23,6 @@ DataHandler::~DataHandler()
 //  file needs to exist & able to be opened
 bool DataHandler::loadData(std::string filename)
 {
-    
 
     this->filename = &filename;
     currentPlayerName = new std::string("");
@@ -43,7 +42,7 @@ bool DataHandler::loadData(std::string filename)
     }
 
     int lineCount = gameData.size();
-    
+
     for (int i = 0; i < lineCount; i++)
     {
         if (i == 0)
@@ -73,14 +72,14 @@ bool DataHandler::loadData(std::string filename)
             while (token != NULL)
             {
                 // printf("%s\n", token);
-                //printf("%s ", token);
+                // printf("%s ", token);
                 tilesInHandAsStrings.push_back(token);
-                //std::cout << "tilesInHandAsStrings size: " << tilesInHandAsStrings.size() << std::endl;
+                // std::cout << "tilesInHandAsStrings size: " << tilesInHandAsStrings.size() << std::endl;
                 token = strtok(NULL, ", ");
             }
 
             int tileCount = tilesInHandAsStrings.size();
-            LinkedList* player1_hand = player1->getHand();
+            LinkedList *player1_hand = player1->getHand();
 
             for (int i = 0; i < tileCount; i++)
             {
@@ -88,9 +87,7 @@ bool DataHandler::loadData(std::string filename)
                 Shape shape = tilesInHandAsStrings.at(i).at(1);
                 Tile *tile = new Tile(colour, shape);
                 player1_hand->addEnd(tile);
-                
             }
-
         }
         else if (i == 3)
         {
@@ -114,23 +111,24 @@ bool DataHandler::loadData(std::string filename)
             while (token != NULL)
             {
                 // printf("%s\n", token);
-                //printf("%s ", token);
+                // printf("%s ", token);
                 tilesInHandAsStrings.push_back(token);
-                //std::cout << "tilesInHandAsStrings size: " << tilesInHandAsStrings.size() << std::endl;
+                // std::cout << "tilesInHandAsStrings size: " << tilesInHandAsStrings.size() << std::endl;
                 token = strtok(NULL, ", ");
             }
 
             int tileCount = tilesInHandAsStrings.size();
-            LinkedList *player2_hand = player2->getHand();
+            LinkedList *player1_hand = player2->getHand();
 
             for (int i = 0; i < tileCount; i++)
             {
                 Colour colour = tilesInHandAsStrings.at(i).at(0);
-                Shape shape = tilesInHandAsStrings.at(i).at(1);
+                Shape shape = int(tilesInHandAsStrings.at(i).at(1) - '0');
                 Tile *tile = new Tile(colour, shape);
-                player2_hand->addEnd(tile);
-                
+                player1_hand->addEnd(tile);
             }
+            player1_hand->printAll();
+            // player2->setHand(player1_hand);
         }
         else if (i == 6)
         {
@@ -142,7 +140,7 @@ bool DataHandler::loadData(std::string filename)
             // ToDo: Parse boardstate.
 
             // TODO 20220807
-            
+
             std::vector<std::string> tilesInHandAsStrings;
             char *str = const_cast<char *>(gameData.at(i).c_str());
 
@@ -154,9 +152,9 @@ bool DataHandler::loadData(std::string filename)
             while (token != NULL)
             {
                 // printf("%s\n", token);
-                //printf("%s ", token);
+                // printf("%s ", token);
                 tilesInHandAsStrings.push_back(token);
-                
+
                 token = strtok(NULL, ", ");
             }
 
@@ -166,12 +164,12 @@ bool DataHandler::loadData(std::string filename)
             for (int i = 0; i < tileCount; i++)
             {
                 Colour colour = tilesInHandAsStrings.at(i).at(0);
-                Shape shape = tilesInHandAsStrings.at(i).at(1);
+                Shape shape = int(tilesInHandAsStrings.at(i).at(1) - '0');
                 Tile *tile = new Tile(colour, shape);
                 player2_hand->addEnd(tile);
-                
             }
-            
+            player2_hand->printAll();
+            // player2->setHand(player2_hand);
         }
         else if (i == 8)
         {
@@ -187,14 +185,14 @@ bool DataHandler::loadData(std::string filename)
             while (token != NULL)
             {
                 // printf("%s\n", token);
-                //printf("%s ", token);
+                // printf("%s ", token);
                 tilesInBagAsStrings.push_back(token);
-                
+
                 token = strtok(NULL, ", ");
             }
 
             int tileCount = tilesInBagAsStrings.size();
-            //LinkedList *player2_hand = player2->getHand();
+            // LinkedList *player2_hand = player2->getHand();
 
             for (int i = 0; i < tileCount; i++)
             {
@@ -202,7 +200,6 @@ bool DataHandler::loadData(std::string filename)
                 Shape shape = tilesInBagAsStrings.at(i).at(1);
                 Tile *tile = new Tile(colour, shape);
                 bag->addEnd(tile);
-                
             }
         }
         else if (i == 9)
@@ -445,12 +442,32 @@ void DataHandler::fillBagWithSavedTiles(LinkedList *&bag)
 
 void DataHandler::fillPlayer1HandWithSavedTiles(LinkedList *&hand)
 {
-    hand->addEnd(player1->getHand()->removeFront());
+    Node *temp = player1->getHand()->getHead();
+
+    if (temp != NULL)
+    {
+        while (temp != NULL)
+        {
+            temp = temp->getNext();
+
+            hand->addEnd(player1->getHand()->removeFront());
+        }
+    }
 }
 
 void DataHandler::fillPlayer2HandWithSavedTiles(LinkedList *&hand)
 {
-    hand->addEnd(player2->getHand()->removeFront());
+    Node *temp = player2->getHand()->getHead();
+
+    if (temp != NULL)
+    {
+        while (temp != NULL)
+        {
+            temp = temp->getNext();
+
+            hand->addEnd(player2->getHand()->removeFront());
+        }
+    }
 }
 
 int DataHandler::getPlayer1Score()
@@ -490,7 +507,6 @@ std::string DataHandler::getCurrentPlayerName()
     }
     else
     {
-        
     }
     return playername;
 }
