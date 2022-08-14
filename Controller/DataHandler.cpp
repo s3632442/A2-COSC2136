@@ -127,8 +127,8 @@ bool DataHandler::loadData(std::string filename)
                 Tile *tile = new Tile(colour, shape);
                 player1_hand->addEnd(tile);
             }
-            player1_hand->printAll();
-            // player2->setHand(player1_hand);
+            
+            player1->setHand(player1_hand);
         }
         else if (i == 6)
         {
@@ -167,9 +167,9 @@ bool DataHandler::loadData(std::string filename)
                 Shape shape = int(tilesInHandAsStrings.at(i).at(1) - '0');
                 Tile *tile = new Tile(colour, shape);
                 player2_hand->addEnd(tile);
-            }
-            player2_hand->printAll();
-            // player2->setHand(player2_hand);
+                        }
+            
+            player2->setHand(player2_hand);
         }
         else if (i == 8)
         {
