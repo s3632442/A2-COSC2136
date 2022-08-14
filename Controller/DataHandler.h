@@ -32,6 +32,7 @@ public:
     int getBoardHeight();
     int getBoardWidth();
     std::string getCurrentPlayerName();
+    Board getBoard();
 
 private:
     std::string *gameState;

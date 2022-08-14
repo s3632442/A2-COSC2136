@@ -127,7 +127,7 @@ bool DataHandler::loadData(std::string filename)
                 Tile *tile = new Tile(colour, shape);
                 player1_hand->addEnd(tile);
             }
-            
+
             player1->setHand(player1_hand);
         }
         else if (i == 6)
@@ -161,15 +161,24 @@ bool DataHandler::loadData(std::string filename)
             int tileCount = tilesInHandAsStrings.size();
             LinkedList *player2_hand = player2->getHand();
 
+            char row = 0;
+            int col = 0;
+
             for (int i = 0; i < tileCount; i++)
             {
                 Colour colour = tilesInHandAsStrings.at(i).at(0);
                 Shape shape = int(tilesInHandAsStrings.at(i).at(1) - '0');
+
+                int row = tilesInHandAsStrings.at(i).at(3) - ASCII_ALPHABET_OFFSET;
+
+                col = int(tilesInHandAsStrings.at(i).at(4) - '0');
                 Tile *tile = new Tile(colour, shape);
-                player2_hand->addEnd(tile);
-                        }
+                std::cout << tile->getColour() << tile->getShape() << "@" << row << col << "\n";
+
+                board->placeTileAt(tile,row,col);
+            }
+
             
-            player2->setHand(player2_hand);
         }
         else if (i == 8)
         {
@@ -214,6 +223,10 @@ bool DataHandler::loadData(std::string filename)
 
     inputFile.close();
     return true;
+}
+
+Board DataHandler::getBoard(){
+    return *(this->board);
 }
 
 // Saves data to a file & from relevent variables

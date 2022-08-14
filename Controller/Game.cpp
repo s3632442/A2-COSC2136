@@ -162,6 +162,7 @@ void Game::loadGame()
         delete board;
         board = nullptr;
         board = new Board(rowCount, columnCount);
+        *board = dataHandler.getBoard();
 
         // Get itIsPlayer1s_turn bool
         if (player1->getName() == dataHandler.getCurrentPlayerName())
