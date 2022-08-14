@@ -27,7 +27,7 @@ bool DataHandler::loadData(std::string filename)
     this->filename = &filename;
     currentPlayerName = new std::string("");
     bag = new LinkedList;
-    // board = new Board();
+    board = new Board();
     player1 = new Player();
     player2 = new Player();
 
@@ -41,9 +41,8 @@ bool DataHandler::loadData(std::string filename)
         gameData.push_back(line);
     }
 
-    int lineCount = gameData.size();
 
-    for (int i = 0; i < lineCount; i++)
+    for (int i = 0; i < gameData.size(); i++)
     {
         if (i == 0)
         {
@@ -229,7 +228,7 @@ bool DataHandler::saveData()
     outputFile << player2->getScore() << std::endl;
     outputFile << handAsString(player2) << std::endl;
     outputFile << boardShapeAsString(board) << std::endl;
-    outputFile << boardStateAsString(board) << std::endl;
+    outputFile << setBoardStateAsString(board) << std::endl;
     outputFile << bagContentsAsString(bag) << std::endl;
     outputFile << *currentPlayerName << std::endl;
 
@@ -325,7 +324,7 @@ std::string DataHandler::boardShapeAsString(Board *&board)
     return boardShape;
 }
 
-std::string DataHandler::boardStateAsString(Board *&board)
+std::string DataHandler::setBoardStateAsString(Board *&board)
 {
     std::string boardState = "";
 
@@ -497,6 +496,8 @@ int DataHandler::getBoardWidth()
 
     return boardWidth;
 }
+
+int getBoardState() {}
 
 std::string DataHandler::getCurrentPlayerName()
 {

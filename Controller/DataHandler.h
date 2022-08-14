@@ -43,7 +43,7 @@ private:
     Player *player2;
     std::string handAsString(Player *&);
     std::string boardShapeAsString(Board *&board);
-    std::string boardStateAsString(Board *&board);
+    std::string setBoardStateAsString(Board *&board);
     std::string bagContentsAsString(LinkedList *&bag);
 };
 
