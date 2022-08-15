@@ -81,7 +81,7 @@ bool DataHandler::loadData(std::string filename)
             for (int i = 0; i < tileCount; i++)
             {
                 Colour colour = tilesInHandAsStrings.at(i).at(0);
-                Shape shape = tilesInHandAsStrings.at(i).at(1);
+                Shape shape = int(tilesInHandAsStrings.at(i).at(1) - '0');
                 Tile *tile = new Tile(colour, shape);
                 player1_hand->addEnd(tile);
             }
@@ -114,17 +114,17 @@ bool DataHandler::loadData(std::string filename)
             }
 
             int tileCount = tilesInHandAsStrings.size();
-            LinkedList *player1_hand = player2->getHand();
+            LinkedList *player2_hand = player2->getHand();
 
             for (int i = 0; i < tileCount; i++)
             {
                 Colour colour = tilesInHandAsStrings.at(i).at(0);
                 Shape shape = int(tilesInHandAsStrings.at(i).at(1) - '0');
                 Tile *tile = new Tile(colour, shape);
-                player1_hand->addEnd(tile);
+                player2_hand->addEnd(tile);
             }
 
-            player1->setHand(player1_hand);
+            player2->setHand(player2_hand);
         }
         else if (i == 6)
         {
@@ -185,7 +185,7 @@ bool DataHandler::loadData(std::string filename)
             }
 
             int tileCount = tilesInBagAsStrings.size();
-            
+
             for (int i = 0; i < tileCount; i++)
             {
                 Colour colour = tilesInBagAsStrings.at(i).at(0);
@@ -461,7 +461,7 @@ void DataHandler::fillPlayer2HandWithSavedTiles(LinkedList *&hand)
         while (temp != NULL)
         {
             temp = temp->getNext();
-
+            
             hand->addEnd(player2->getHand()->removeFront());
         }
     }

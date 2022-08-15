@@ -197,6 +197,8 @@ void Game::play()
     // 2. Tiles depleted
     do
     {
+        std::cout<<"P@HAnd"<<std::endl;
+        player2->getHand()->printAll();
         printCurrentPlayer(currentPlayer);
         printScores();
         printBoard();
@@ -205,8 +207,8 @@ void Game::play()
         promptForPlayInput();
         takeTurn(currentPlayer);
 
-        //std::string *ouputFilename = new std::string("testOutput20220806141535.txt");
-        //saveGame(ouputFilename);
+        // std::string *ouputFilename = new std::string("testOutput20220806141535.txt");
+        // saveGame(ouputFilename);
 
         exiting = checkEndGameConditions(currentPlayer);
 
@@ -354,10 +356,14 @@ void Game::printCurrentPlayer(Player *&whoseTurnItIs)
         whoseTurnItIs = this->player2;
     }
     std::cout << whoseTurnItIs->getName() << ", it's your turn" << std::endl;
+
+    
 }
 
 void Game::takeTurn(Player *&whoseTurnItIs)
 {
+    
+
     bool inputIsInvalid = true;
     do
     {
