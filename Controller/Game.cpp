@@ -205,8 +205,8 @@ void Game::play()
         promptForPlayInput();
         takeTurn(currentPlayer);
 
-        std::string *ouputFilename = new std::string("testOutput20220806141535.txt");
-        saveGame(ouputFilename);
+        //std::string *ouputFilename = new std::string("testOutput20220806141535.txt");
+        //saveGame(ouputFilename);
 
         exiting = checkEndGameConditions(currentPlayer);
 

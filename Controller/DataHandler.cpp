@@ -71,10 +71,7 @@ bool DataHandler::loadData(std::string filename)
             // delimiters present in str[].
             while (token != NULL)
             {
-                // printf("%s\n", token);
-                // printf("%s ", token);
                 tilesInHandAsStrings.push_back(token);
-                // std::cout << "tilesInHandAsStrings size: " << tilesInHandAsStrings.size() << std::endl;
                 token = strtok(NULL, ", ");
             }
 
@@ -110,10 +107,9 @@ bool DataHandler::loadData(std::string filename)
             // delimiters present in str[].
             while (token != NULL)
             {
-                // printf("%s\n", token);
-                // printf("%s ", token);
+
                 tilesInHandAsStrings.push_back(token);
-                // std::cout << "tilesInHandAsStrings size: " << tilesInHandAsStrings.size() << std::endl;
+
                 token = strtok(NULL, ", ");
             }
 
@@ -137,10 +133,6 @@ bool DataHandler::loadData(std::string filename)
         }
         else if (i == 7)
         {
-            // ToDo: Parse boardstate.
-
-            // TODO 20220807
-
             std::vector<std::string> tilesInHandAsStrings;
             char *str = const_cast<char *>(gameData.at(i).c_str());
 
@@ -151,8 +143,6 @@ bool DataHandler::loadData(std::string filename)
             // delimiters present in str[].
             while (token != NULL)
             {
-                // printf("%s\n", token);
-                // printf("%s ", token);
                 tilesInHandAsStrings.push_back(token);
 
                 token = strtok(NULL, ", ");
@@ -173,12 +163,8 @@ bool DataHandler::loadData(std::string filename)
 
                 col = int(tilesInHandAsStrings.at(i).at(4) - '0');
                 Tile *tile = new Tile(colour, shape);
-                std::cout << tile->getColour() << tile->getShape() << "@" << row << col << "\n";
-
-                board->placeTileAt(tile,row,col);
+                board->placeTileAt(tile, row, col);
             }
-
-            
         }
         else if (i == 8)
         {
@@ -193,16 +179,13 @@ bool DataHandler::loadData(std::string filename)
             // delimiters present in str[].
             while (token != NULL)
             {
-                // printf("%s\n", token);
-                // printf("%s ", token);
                 tilesInBagAsStrings.push_back(token);
 
                 token = strtok(NULL, ", ");
             }
 
             int tileCount = tilesInBagAsStrings.size();
-            // LinkedList *player2_hand = player2->getHand();
-
+            
             for (int i = 0; i < tileCount; i++)
             {
                 Colour colour = tilesInBagAsStrings.at(i).at(0);
@@ -225,7 +208,8 @@ bool DataHandler::loadData(std::string filename)
     return true;
 }
 
-Board DataHandler::getBoard(){
+Board DataHandler::getBoard()
+{
     return *(this->board);
 }
 
