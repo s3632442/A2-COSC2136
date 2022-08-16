@@ -197,8 +197,6 @@ void Game::play()
     // 2. Tiles depleted
     do
     {
-        std::cout<<"P@HAnd"<<std::endl;
-        player2->getHand()->printAll();
         printCurrentPlayer(currentPlayer);
         printScores();
         printBoard();
@@ -206,9 +204,6 @@ void Game::play()
         printBagTileCount();
         promptForPlayInput();
         takeTurn(currentPlayer);
-
-        // std::string *ouputFilename = new std::string("testOutput20220806141535.txt");
-        // saveGame(ouputFilename);
 
         exiting = checkEndGameConditions(currentPlayer);
 
@@ -356,13 +351,10 @@ void Game::printCurrentPlayer(Player *&whoseTurnItIs)
         whoseTurnItIs = this->player2;
     }
     std::cout << whoseTurnItIs->getName() << ", it's your turn" << std::endl;
-
-    
 }
 
 void Game::takeTurn(Player *&whoseTurnItIs)
 {
-    
 
     bool inputIsInvalid = true;
     do
@@ -499,7 +491,11 @@ void Game::takeTurn(Player *&whoseTurnItIs)
 
                 else if (firstWord == "save")
                 {
-                    std::cout << "YOU TYPED: save gameFile" << std::endl;
+                    // display menu
+                    std::string *ouputFilename = new std::string(secondWord);
+                    ouputFilename->append(".txt");
+                    saveGame(ouputFilename);
+                    std::cout << "saved " << *ouputFilename << std::endl;
                     inputIsInvalid = false;
                 }
             }
@@ -511,8 +507,20 @@ void Game::takeTurn(Player *&whoseTurnItIs)
         }
 
     } while (inputIsInvalid);
+}
 
-} // takeTurn()
+bool Game::getCharacter(char c)
+{
+
+    if (std::cin.eof())
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+};
 
 bool Game::checkEndGameConditions(Player *&player)
 {

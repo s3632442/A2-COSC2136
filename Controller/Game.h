@@ -49,6 +49,11 @@ private:
     Tile *tempTile;
     LinkedList *hand;
 
+    std::string *c;
+    bool *isChar;
+    std::regex *statement;
+    bool getCharacter(char);
+
     void saveGame(std::string *&filename);
     void play();
     void exit();
