@@ -69,8 +69,7 @@ void Menu::prompt(std::string string)
 // checks character was entered
 bool Menu::getCharacter(char c)
 {
-
-    if (std::cin.eof())
+if (std::cin.eof())
     {
         return true;
     }
@@ -78,6 +77,7 @@ bool Menu::getCharacter(char c)
     {
         return false;
     }
+    
 };
 
 void Menu::credits()

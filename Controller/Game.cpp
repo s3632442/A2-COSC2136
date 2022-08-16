@@ -375,8 +375,13 @@ void Game::takeTurn(Player *&whoseTurnItIs)
             count++;
         }
         wordCount = tokenisedInput.size();
+        char x = tokenisedInput.at(0)[1];
+        char y = tokenisedInput.at(0)[0];
+        if (x == '0'&& y=='/')
+        {
 
-        if (validation->validateInputLength(wordCount))
+        }
+        else if (validation->validateInputLength(wordCount))
         {
 
             if (wordCount != 4 && wordCount != 2)
