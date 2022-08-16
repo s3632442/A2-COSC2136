@@ -117,7 +117,7 @@ std::string Game::getBoardAsString()
 }
 
 // Setup bag, player1 and player2
-void Game::newGame()
+bool Game::newGame()
 {
     // New Tiles
     fillBagAndShuffle();
@@ -126,10 +126,12 @@ void Game::newGame()
     std::cout << "Let's Play!" << std::endl;
     std::cout << std::endl;
 
-    play();
+    nextTurn = play();
+
+    return nextTurn;
 }
 
-void Game::loadGame()
+bool Game::loadGame()
 {
     std::cout << "Enter the filename from which to load a game" << std::endl;
     std::cout << "> ";
@@ -180,17 +182,19 @@ void Game::loadGame()
 
         std::cout << std::endl;
 
-        play();
+        nextTurn = play();
     }
     else
     {
         std::cout << "Filename " << filename << " wasn't found." << std::endl;
     }
+    return nextTurn;
 }
 
-void Game::play()
+bool Game::play()
 {
     bool exiting = false;
+    
 
     // Play until:
     // 1. User types EOF (Control+D on unix/Mac; Control+Z on Windows), or,
@@ -203,7 +207,7 @@ void Game::play()
         printHand(currentPlayer);
         printBagTileCount();
         promptForPlayInput();
-        takeTurn(currentPlayer);
+        nextTurn = takeTurn(currentPlayer);
 
         exiting = checkEndGameConditions(currentPlayer);
 
@@ -220,7 +224,9 @@ void Game::play()
             *itIsPlayer1s_turn = !*itIsPlayer1s_turn;
         }
 
-    } while (!exiting);
+    } while (!exiting && nextTurn);
+
+    return nextTurn;
 }
 
 void Game::prompt_invalidInput()
@@ -353,7 +359,7 @@ void Game::printCurrentPlayer(Player *&whoseTurnItIs)
     std::cout << whoseTurnItIs->getName() << ", it's your turn" << std::endl;
 }
 
-void Game::takeTurn(Player *&whoseTurnItIs)
+bool Game::takeTurn(Player *&whoseTurnItIs)
 {
 
     bool inputIsInvalid = true;
@@ -377,13 +383,12 @@ void Game::takeTurn(Player *&whoseTurnItIs)
         wordCount = tokenisedInput.size();
         char x = tokenisedInput.at(0)[1];
         char y = tokenisedInput.at(0)[0];
-        if (x == '0'&& y=='/')
+        if (x == '0' && y == '/')
         {
-
+            inputIsInvalid = false;
         }
         else if (validation->validateInputLength(wordCount))
         {
-
             if (wordCount != 4 && wordCount != 2)
             {
                 prompt_invalidInput();
@@ -512,6 +517,7 @@ void Game::takeTurn(Player *&whoseTurnItIs)
         }
 
     } while (inputIsInvalid);
+    return inputIsInvalid;
 }
 
 bool Game::getCharacter(char c)

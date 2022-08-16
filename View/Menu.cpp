@@ -28,16 +28,15 @@ bool Menu::runMenu()
     do
     {
         mainMenu();
-
         if (*c == '1')
         {
             prompt("Starting a New Game\n");
-            game->newGame();
+            *game_over = !game->newGame();
         }
         else if (*c == '2')
         {
             prompt("Load Game\n");
-            game->loadGame();
+            *game_over = !game->loadGame();
         }
         else if (*c == '3')
         {
@@ -69,7 +68,7 @@ void Menu::prompt(std::string string)
 // checks character was entered
 bool Menu::getCharacter(char c)
 {
-if (std::cin.eof())
+    if (std::cin.eof())
     {
         return true;
     }
@@ -77,7 +76,6 @@ if (std::cin.eof())
     {
         return false;
     }
-    
 };
 
 void Menu::credits()

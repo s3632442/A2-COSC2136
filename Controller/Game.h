@@ -33,8 +33,8 @@ public:
     Game();
     ~Game();
     std::string getBoardAsString();
-    void newGame();
-    void loadGame();
+    bool newGame();
+    bool loadGame();
     Player getCurentPlayer();
 
 private:
@@ -48,6 +48,7 @@ private:
     ScoringSystem *scoringSystem;
     Tile *tempTile;
     LinkedList *hand;
+    bool nextTurn = true;
 
     std::string *c;
     bool *isChar;
@@ -55,7 +56,7 @@ private:
     bool getCharacter(char);
 
     void saveGame(std::string *&filename);
-    void play();
+    bool play();
     void exit();
     void prompt_invalidInput();
     void fillBagAndShuffle();
@@ -64,7 +65,7 @@ private:
     void printBoard();
     void promptForPlayInput();
     void printCurrentPlayer(Player *&);
-    void takeTurn(Player *&);
+    bool takeTurn(Player *&);
     bool checkEndGameConditions(Player *&);
     void printBagTileCount();
     std::string getUserInput();
