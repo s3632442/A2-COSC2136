@@ -89,24 +89,36 @@ void Menu::credits()
 
 void Menu::mainMenu()
 {
+
     do
     {
-        // display menu
-        prompt("Menu\n----\n1. New Game\n2. Load Game\n3. Credits (Show student information)\n4. Quit\n");
-        std::string *s = new std::string("");
-        std::cin >> *s;
-
-        if (*s == std::string("help"))
+        prompt("Menu\n----\n1. New Game\n2. Load Game\n3. Credits (Show student information)\n4. Quit\nhelp. Help");
+        std::vector<std::string> inputTokens = game->tokeniseInput();
+        if (inputTokens.at(0) == "help")
         {
-            std::cout << "HELP MENU\n";
+            help();
         }
-        else
+        else if (inputTokens.at(0) == "rules")
         {
-            std::cout << "> ";
+            rules();
+        }
+        else if (inputTokens.at(0)[0] == '1' || inputTokens.at(0)[0] == '2' || inputTokens.at(0)[0] == '3' || inputTokens.at(0)[0] == '4')
+        {
 
-            std::cin >> *c;
+            *c = inputTokens.at(0)[0];
 
             *isChar = getCharacter(*c);
         }
+        
+
+        *isChar = getCharacter(*c);
     } while (isChar && !std::regex_match(c, *statement));
 }
+void Menu::help()
+{
+    std::cout << "-----------------HELP-----------------\nTo begin a new game enter \"1\" and press enter.\nTo load a saved game type \"2\" and press enter.\nTo see Credits type \"3\" and press enter.\nTo quit type \"4\" and press enter.\nTo see the rules type \"rules\" and press enter.\n";
+};
+void Menu::rules()
+{
+    std::cout << "-----------------RULES-----------------\nJust Kidding no rules for you come back two years!\n";
+};
