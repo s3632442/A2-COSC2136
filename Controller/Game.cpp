@@ -369,6 +369,10 @@ void Game::takeTurn(Player *&whoseTurnItIs)
         {
             std::cout << "SUCK MY BALLS\n";
         }
+        else if (inputTokens.at(0) == "help")
+        {
+            std::cout << "HELP MESSAGES HERE\n";
+        }
         else if (validation->validateInputLength(inputTokens.size()))
         {
 
@@ -637,26 +641,32 @@ void Game::setupNewPlayers()
 
         std::string player_name = "DEFAULT";
         player_name = getUserInput();
-        bool nameIsValid = validation->playerNameValid(player_name);
-        if (nameIsValid)
+        if (player_name == "help")
         {
-            currentPlayer->setName(player_name);
-            LinkedList *player_hand = currentPlayer->getHand();
-            for (int i = 0; i < handTilecount; i++)
-            {
-                player_hand->addEnd(bag->removeFront());
-            }
-
-            *itIsPlayer1s_turn = !*itIsPlayer1s_turn;
-            playerNamesEntered++;
+            std::cout << "HELP MENU ---------\n";
         }
         else
         {
-            std::cout << "Username must be UPPERCASE characters, A to Z only" << std::endl;
-        }
-        std::cout << std::endl;
-        std::cout << std::endl;
+            bool nameIsValid = validation->playerNameValid(player_name);
+            if (nameIsValid)
+            {
+                currentPlayer->setName(player_name);
+                LinkedList *player_hand = currentPlayer->getHand();
+                for (int i = 0; i < handTilecount; i++)
+                {
+                    player_hand->addEnd(bag->removeFront());
+                }
 
+                *itIsPlayer1s_turn = !*itIsPlayer1s_turn;
+                playerNamesEntered++;
+            }
+            else
+            {
+                std::cout << "Username must be UPPERCASE characters, A to Z only" << std::endl;
+            }
+            std::cout << std::endl;
+            std::cout << std::endl;
+        }
     } while (playerNamesEntered < playersCount);
 }
 std::vector<std::string> Game::tokeniseInput()
