@@ -28,16 +28,15 @@ bool Menu::runMenu()
     do
     {
         mainMenu();
-
         if (*c == '1')
         {
             prompt("Starting a New Game\n");
-            game->newGame();
+            *game_over = !game->newGame();
         }
         else if (*c == '2')
         {
             prompt("Load Game\n");
-            game->loadGame();
+            *game_over = !game->loadGame();
         }
         else if (*c == '3')
         {
@@ -69,7 +68,6 @@ void Menu::prompt(std::string string)
 // checks character was entered
 bool Menu::getCharacter(char c)
 {
-
     if (std::cin.eof())
     {
         return true;
@@ -91,15 +89,36 @@ void Menu::credits()
 
 void Menu::mainMenu()
 {
+
     do
     {
-        // display menu
-        prompt("Menu\n----\n1. New Game\n2. Load Game\n3. Credits (Show student information)\n4. Quit\n");
-        std::cout << "> ";
+        prompt("Menu\n----\n1. New Game\n2. Load Game\n3. Credits (Show student information)\n4. Quit\nhelp. Help");
+        std::vector<std::string> inputTokens = game->tokeniseInput();
+        if (inputTokens.at(0) == "help")
+        {
+            help();
+        }
+        else if (inputTokens.at(0) == "rules")
+        {
+            rules();
+        }
+        else if (inputTokens.at(0)[0] == '1' || inputTokens.at(0)[0] == '2' || inputTokens.at(0)[0] == '3' || inputTokens.at(0)[0] == '4')
+        {
 
-        std::cin >> *c;
+            *c = inputTokens.at(0)[0];
+
+            *isChar = getCharacter(*c);
+        }
+        
 
         *isChar = getCharacter(*c);
-
     } while (isChar && !std::regex_match(c, *statement));
 }
+void Menu::help()
+{
+    std::cout << "-----------------HELP-----------------\nTo begin a new game enter \"1\" and press enter.\nTo load a saved game type \"2\" and press enter.\nTo see Credits type \"3\" and press enter.\nTo quit type \"4\" and press enter.\nTo see the rules type \"rules\" and press enter.\n";
+};
+void Menu::rules()
+{
+    std::cout << "-----------------RULES-----------------\nJust Kidding no rules for you come back two years!\n";
+};

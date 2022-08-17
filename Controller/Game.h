@@ -9,6 +9,7 @@
 #include <sstream>
 #include <random>
 
+
 #include "../Model/TileCodes.h"
 #include "../Model/Tile.h"
 #include "../Model/Board.h"
@@ -33,9 +34,11 @@ public:
     Game();
     ~Game();
     std::string getBoardAsString();
-    void newGame();
-    void loadGame();
+    bool newGame();
+    bool loadGame();
     Player getCurentPlayer();
+    std::vector<std::string> tokeniseInput();
+    
 
 private:
     Player *player1;
@@ -48,9 +51,17 @@ private:
     ScoringSystem *scoringSystem;
     Tile *tempTile;
     LinkedList *hand;
+    bool nextTurn = true;
+    
+    
+
+    std::string *c;
+    bool *isChar;
+    std::regex *statement;
+    bool getCharacter(char);
 
     void saveGame(std::string *&filename);
-    void play();
+    bool play();
     void exit();
     void prompt_invalidInput();
     void fillBagAndShuffle();
@@ -59,7 +70,7 @@ private:
     void printBoard();
     void promptForPlayInput();
     void printCurrentPlayer(Player *&);
-    void takeTurn(Player *&);
+    bool takeTurn(Player *&);
     bool checkEndGameConditions(Player *&);
     void printBagTileCount();
     std::string getUserInput();

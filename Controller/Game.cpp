@@ -117,7 +117,7 @@ std::string Game::getBoardAsString()
 }
 
 // Setup bag, player1 and player2
-void Game::newGame()
+bool Game::newGame()
 {
     // New Tiles
     fillBagAndShuffle();
@@ -126,10 +126,12 @@ void Game::newGame()
     std::cout << "Let's Play!" << std::endl;
     std::cout << std::endl;
 
-    play();
+    nextTurn = play();
+
+    return nextTurn;
 }
 
-void Game::loadGame()
+bool Game::loadGame()
 {
     std::cout << "Enter the filename from which to load a game" << std::endl;
     std::cout << "> ";
@@ -162,6 +164,7 @@ void Game::loadGame()
         delete board;
         board = nullptr;
         board = new Board(rowCount, columnCount);
+        *board = dataHandler.getBoard();
 
         // Get itIsPlayer1s_turn bool
         if (player1->getName() == dataHandler.getCurrentPlayerName())
@@ -179,15 +182,16 @@ void Game::loadGame()
 
         std::cout << std::endl;
 
-        play();
+        nextTurn = play();
     }
     else
     {
         std::cout << "Filename " << filename << " wasn't found." << std::endl;
     }
+    return nextTurn;
 }
 
-void Game::play()
+bool Game::play()
 {
     bool exiting = false;
 
@@ -196,16 +200,14 @@ void Game::play()
     // 2. Tiles depleted
     do
     {
+
         printCurrentPlayer(currentPlayer);
         printScores();
         printBoard();
         printHand(currentPlayer);
         printBagTileCount();
         promptForPlayInput();
-        takeTurn(currentPlayer);
-
-        std::string *ouputFilename = new std::string("testOutput20220806141535.txt");
-        saveGame(ouputFilename);
+        nextTurn = takeTurn(currentPlayer);
 
         exiting = checkEndGameConditions(currentPlayer);
 
@@ -222,7 +224,9 @@ void Game::play()
             *itIsPlayer1s_turn = !*itIsPlayer1s_turn;
         }
 
-    } while (!exiting);
+    } while (!exiting && nextTurn);
+
+    return nextTurn;
 }
 
 void Game::prompt_invalidInput()
@@ -355,43 +359,39 @@ void Game::printCurrentPlayer(Player *&whoseTurnItIs)
     std::cout << whoseTurnItIs->getName() << ", it's your turn" << std::endl;
 }
 
-void Game::takeTurn(Player *&whoseTurnItIs)
+bool Game::takeTurn(Player *&whoseTurnItIs)
 {
+
     bool inputIsInvalid = true;
     do
     {
-        int wordCount = 0;
-        std::string user_input = "";
 
-        std::cin >> std::ws;
-        std::getline(std::cin, user_input);
+        std::vector<std::string> inputTokens = tokeniseInput();
 
-        std::vector<std::string> tokenisedInput;
-        std::string word;
-        std::stringstream ss(user_input);
-        int count = 0;
-        while (ss >> word)
+        if (inputTokens.at(0)[1] == '0' && inputTokens.at(0)[0] == '/')
         {
-            tokenisedInput.push_back(word);
-            count++;
+            inputIsInvalid = false;
         }
-        wordCount = tokenisedInput.size();
-
-        if (validation->validateInputLength(wordCount))
+        else if (inputTokens.at(0) == "help")
+        {
+            std::cout << "-----------------HELP-----------------\nThe tiles you can play are listed as \"Your hand\"\nYou can play a tile matching its letter or number to the letter and number of a tile on the board\nThe letters and numbers represent their described colour or shape\nThe point is to make a string of matching colours or shapes in order to gain points by adding to the string, though there can only be one of each combination in any given sequence\nIf you achieve a complete sequence of all available types you get a quirkle and extra points\n";
+            play();
+        }
+        else if (validation->validateInputLength(inputTokens.size()))
         {
 
-            if (wordCount != 4 && wordCount != 2)
+            if (inputTokens.size() != 4 && inputTokens.size() != 2)
             {
                 prompt_invalidInput();
             }
-            else if (wordCount == 4)
+            else if (inputTokens.size() == 4)
             {
                 std::string place = "place";
-                std::string firstWord = tokenisedInput.at(0);
+                std::string firstWord = inputTokens.at(0);
 
                 if (firstWord == place)
                 {
-                    std::string board_coord = tokenisedInput.at(3);
+                    std::string board_coord = inputTokens.at(3);
                     std::transform(board_coord.begin(), board_coord.end(), board_coord.begin(), ::toupper);
 
                     int row = board_coord.at(0) - ASCII_ALPHABET_OFFSET;
@@ -400,7 +400,7 @@ void Game::takeTurn(Player *&whoseTurnItIs)
                     std::transform(columnString.begin(), columnString.end(), columnString.begin(), ::toupper);
 
                     int column = std::stoi(columnString);
-                    std::string tile_colour_shape = tokenisedInput.at(1);
+                    std::string tile_colour_shape = inputTokens.at(1);
 
                     // 20220807
                     // https://stackoverflow.com/questions/60578429/converting-strings-to-uppercase-c
@@ -457,10 +457,10 @@ void Game::takeTurn(Player *&whoseTurnItIs)
                     prompt_invalidInput();
                 }
             }
-            else if (wordCount == 2)
+            else if (inputTokens.size() == 2)
             {
-                std::string firstWord = tokenisedInput.at(0);
-                std::string secondWord = tokenisedInput.at(1);
+                std::string firstWord = inputTokens.at(0);
+                std::string secondWord = inputTokens.at(1);
                 if (firstWord != "replace" && firstWord != "save")
                 {
                     prompt_invalidInput();
@@ -492,11 +492,15 @@ void Game::takeTurn(Player *&whoseTurnItIs)
 
                 else if (firstWord == "save")
                 {
-                    std::cout << "YOU TYPED: save gameFile" << std::endl;
+                    // display menu
+                    std::string *ouputFilename = new std::string(secondWord);
+                    ouputFilename->append(".txt");
+                    saveGame(ouputFilename);
+                    std::cout << "saved " << *ouputFilename << std::endl;
                     inputIsInvalid = false;
                 }
             }
-        } // valid wordcount
+        } // valid inputTokens.size()
         else
         {
             // Invalid wordcount
@@ -504,8 +508,21 @@ void Game::takeTurn(Player *&whoseTurnItIs)
         }
 
     } while (inputIsInvalid);
+    return inputIsInvalid;
+}
 
-} // takeTurn()
+bool Game::getCharacter(char c)
+{
+
+    if (std::cin.eof())
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+};
 
 bool Game::checkEndGameConditions(Player *&player)
 {
@@ -601,29 +618,6 @@ std::string Game::getUserInput()
     return input_text;
 }
 
-/*
-// Get a word from a sentence, of user input
-std::string Game::getUserInput(int index)
-{
-    // Vector of string to save tokens/words
-    std::vector<std::string> tokenisedInput;
-    std::string word;
-
-    // Parsing sentence input using streams
-    std::string usersInput;
-    std::cin >> std::ws;
-    std::getline(std::cin, usersInput);
-    std::stringstream ss(usersInput);
-    while (ss >> word)
-    {
-        tokenisedInput.push_back(word);
-    }
-
-    return tokenisedInput.at(index);
-}
-*/
-
-// Usernames and tiles setup.
 void Game::setupNewPlayers()
 {
     int playerNamesEntered = 0;
@@ -652,25 +646,52 @@ void Game::setupNewPlayers()
 
         std::string player_name = "DEFAULT";
         player_name = getUserInput();
-        bool nameIsValid = validation->playerNameValid(player_name);
-        if (nameIsValid)
+        if (player_name == "help")
         {
-            currentPlayer->setName(player_name);
-            LinkedList *player_hand = currentPlayer->getHand();
-            for (int i = 0; i < handTilecount; i++)
-            {
-                player_hand->addEnd(bag->removeFront());
-            }
-
-            *itIsPlayer1s_turn = !*itIsPlayer1s_turn;
-            playerNamesEntered++;
+            std::cout << "---------HELP---------\nPlease enter a name for the first player and then press enter\nThen do the same for the second player\nAll names must be ALL CAPS not sure why but thats what we did and I dont have time to mess around fixing it\n";
         }
         else
         {
-            std::cout << "Username must be UPPERCASE characters, A to Z only" << std::endl;
-        }
-        std::cout << std::endl;
-        std::cout << std::endl;
+            bool nameIsValid = validation->playerNameValid(player_name);
+            if (nameIsValid)
+            {
+                currentPlayer->setName(player_name);
+                LinkedList *player_hand = currentPlayer->getHand();
+                for (int i = 0; i < handTilecount; i++)
+                {
+                    player_hand->addEnd(bag->removeFront());
+                }
 
+                *itIsPlayer1s_turn = !*itIsPlayer1s_turn;
+                playerNamesEntered++;
+            }
+            else
+            {
+                std::cout << "Username must be UPPERCASE characters, A to Z only" << std::endl;
+            }
+            std::cout << std::endl;
+            std::cout << std::endl;
+        }
     } while (playerNamesEntered < playersCount);
+}
+std::vector<std::string> Game::tokeniseInput()
+{
+
+    int wordCount = 0;
+    std::string user_input = "";
+
+    std::cin >> std::ws;
+    std::getline(std::cin, user_input);
+
+    std::vector<std::string> tokenisedInput;
+    std::string word;
+    std::stringstream ss(user_input);
+    int count = 0;
+    while (ss >> word)
+    {
+        tokenisedInput.push_back(word);
+        count++;
+    }
+    wordCount = tokenisedInput.size();
+    return tokenisedInput;
 }
