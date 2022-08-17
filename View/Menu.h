@@ -17,6 +17,7 @@
 #include <regex>
 #include <string>
 
+
 #include "../Model/Node.h"
 #include "../Model/LinkedList.h"
 #include "../Model/Node.h"
@@ -34,12 +35,16 @@ public:
     bool *isChar;
     std::regex *statement;
     bool *game_over;
+    std::string user_input;
+    
 
     void prompt(std::string);
     bool getCharacter(char);
     bool runMenu();
     void credits();
     void mainMenu();
+    void help();
+    void rules();
 
 private:
     Game* game;

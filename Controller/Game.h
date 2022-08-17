@@ -9,6 +9,7 @@
 #include <sstream>
 #include <random>
 
+
 #include "../Model/TileCodes.h"
 #include "../Model/Tile.h"
 #include "../Model/Board.h"
@@ -36,6 +37,8 @@ public:
     void newGame();
     void loadGame();
     Player getCurentPlayer();
+    std::vector<std::string> tokeniseInput();
+    
 
 private:
     Player *player1;
@@ -48,6 +51,8 @@ private:
     ScoringSystem *scoringSystem;
     Tile *tempTile;
     LinkedList *hand;
+    
+    
 
     std::string *c;
     bool *isChar;

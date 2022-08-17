@@ -18,4 +18,7 @@
 #define STAR_6    5
 #define CLOVER    6
 
+//objects
+#define ITS std::vector<std::string> token;
+
 #endif // ASSIGN1_TILECODES_H

@@ -197,6 +197,7 @@ void Game::play()
     // 2. Tiles depleted
     do
     {
+
         printCurrentPlayer(currentPlayer);
         printScores();
         printBoard();
@@ -359,43 +360,30 @@ void Game::takeTurn(Player *&whoseTurnItIs)
     bool inputIsInvalid = true;
     do
     {
-        int wordCount = 0;
-        std::string user_input = "";
 
-        std::cin >> std::ws;
-        std::getline(std::cin, user_input);
+        std::vector<std::string> inputTokens = tokeniseInput();
 
-        std::vector<std::string> tokenisedInput;
-        std::string word;
-        std::stringstream ss(user_input);
-        int count = 0;
-        while (ss >> word)
+        char x = inputTokens.at(0)[1];
+        char y = inputTokens.at(0)[0];
+        if (inputTokens.at(0)[0] == EOF)
         {
-            tokenisedInput.push_back(word);
-            count++;
+            std::cout << "SUCK MY BALLS\n";
         }
-        wordCount = tokenisedInput.size();
-        char x = tokenisedInput.at(0)[1];
-        char y = tokenisedInput.at(0)[0];
-        if (x == '0'&& y=='/')
+        else if (validation->validateInputLength(inputTokens.size()))
         {
 
-        }
-        else if (validation->validateInputLength(wordCount))
-        {
-
-            if (wordCount != 4 && wordCount != 2)
+            if (inputTokens.size() != 4 && inputTokens.size() != 2)
             {
                 prompt_invalidInput();
             }
-            else if (wordCount == 4)
+            else if (inputTokens.size() == 4)
             {
                 std::string place = "place";
-                std::string firstWord = tokenisedInput.at(0);
+                std::string firstWord = inputTokens.at(0);
 
                 if (firstWord == place)
                 {
-                    std::string board_coord = tokenisedInput.at(3);
+                    std::string board_coord = inputTokens.at(3);
                     std::transform(board_coord.begin(), board_coord.end(), board_coord.begin(), ::toupper);
 
                     int row = board_coord.at(0) - ASCII_ALPHABET_OFFSET;
@@ -404,7 +392,7 @@ void Game::takeTurn(Player *&whoseTurnItIs)
                     std::transform(columnString.begin(), columnString.end(), columnString.begin(), ::toupper);
 
                     int column = std::stoi(columnString);
-                    std::string tile_colour_shape = tokenisedInput.at(1);
+                    std::string tile_colour_shape = inputTokens.at(1);
 
                     // 20220807
                     // https://stackoverflow.com/questions/60578429/converting-strings-to-uppercase-c
@@ -461,10 +449,10 @@ void Game::takeTurn(Player *&whoseTurnItIs)
                     prompt_invalidInput();
                 }
             }
-            else if (wordCount == 2)
+            else if (inputTokens.size() == 2)
             {
-                std::string firstWord = tokenisedInput.at(0);
-                std::string secondWord = tokenisedInput.at(1);
+                std::string firstWord = inputTokens.at(0);
+                std::string secondWord = inputTokens.at(1);
                 if (firstWord != "replace" && firstWord != "save")
                 {
                     prompt_invalidInput();
@@ -504,7 +492,7 @@ void Game::takeTurn(Player *&whoseTurnItIs)
                     inputIsInvalid = false;
                 }
             }
-        } // valid wordcount
+        } // valid inputTokens.size()
         else
         {
             // Invalid wordcount
@@ -621,29 +609,6 @@ std::string Game::getUserInput()
     return input_text;
 }
 
-/*
-// Get a word from a sentence, of user input
-std::string Game::getUserInput(int index)
-{
-    // Vector of string to save tokens/words
-    std::vector<std::string> tokenisedInput;
-    std::string word;
-
-    // Parsing sentence input using streams
-    std::string usersInput;
-    std::cin >> std::ws;
-    std::getline(std::cin, usersInput);
-    std::stringstream ss(usersInput);
-    while (ss >> word)
-    {
-        tokenisedInput.push_back(word);
-    }
-
-    return tokenisedInput.at(index);
-}
-*/
-
-// Usernames and tiles setup.
 void Game::setupNewPlayers()
 {
     int playerNamesEntered = 0;
@@ -693,4 +658,24 @@ void Game::setupNewPlayers()
         std::cout << std::endl;
 
     } while (playerNamesEntered < playersCount);
+}
+std::vector<std::string> Game::tokeniseInput()
+{
+    int wordCount = 0;
+    std::string user_input = "";
+
+    std::cin >> std::ws;
+    std::getline(std::cin, user_input);
+
+    std::vector<std::string> tokenisedInput;
+    std::string word;
+    std::stringstream ss(user_input);
+    int count = 0;
+    while (ss >> word)
+    {
+        tokenisedInput.push_back(word);
+        count++;
+    }
+    wordCount = tokenisedInput.size();
+    return tokenisedInput;
 }
