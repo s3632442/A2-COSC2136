@@ -93,11 +93,20 @@ void Menu::mainMenu()
     {
         // display menu
         prompt("Menu\n----\n1. New Game\n2. Load Game\n3. Credits (Show student information)\n4. Quit\n");
-        std::cout << "> ";
+        std::string *s = new std::string("");
+        std::cin >> *s;
 
-        std::cin >> *c;
+        if (*s == std::string("help"))
+        {
+            std::cout << "HELP MENU\n";
+        }
+        else
+        {
+            std::cout << "> ";
 
-        *isChar = getCharacter(*c);
+            std::cin >> *c;
 
+            *isChar = getCharacter(*c);
+        }
     } while (isChar && !std::regex_match(c, *statement));
 }
