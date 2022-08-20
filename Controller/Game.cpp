@@ -328,6 +328,8 @@ void Game::printScores()
     }
     else if (numToPlay == '4')
     {
+        std::cout << "Score for " << player3->getName() << ": "
+                  << player3->getScore() << std::endl;
         std::cout << "Score for " << player4->getName() << ": "
                   << player4->getScore() << std::endl;
     }
@@ -362,22 +364,22 @@ void Game::printCurrentPlayer(Player *&whoseTurnItIs)
     if (nextPlayer == 1)
     {
         whoseTurnItIs = this->player1;
-        nextPlayer =2;
+        nextPlayer = 2;
     }
     else if (nextPlayer == 2)
     {
         whoseTurnItIs = this->player2;
-        nextPlayer =3;
+        nextPlayer = 3;
     }
     else if (nextPlayer == 3)
     {
         whoseTurnItIs = this->player3;
-        nextPlayer =4;
+        nextPlayer = 4;
     }
     else if (nextPlayer == 4)
     {
         whoseTurnItIs = this->player4;
-        nextPlayer =2;
+        nextPlayer = 1;
     }
     std::cout << whoseTurnItIs->getName() << ", it's your turn" << std::endl;
 }
