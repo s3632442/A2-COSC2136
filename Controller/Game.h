@@ -56,7 +56,9 @@ private:
     Tile *tempTile;
     LinkedList *hand;
     bool nextTurn = true;
-    
+    char numToPlay = '0';
+    int nextPlayer = 1;
+
     
     
     
@@ -83,6 +85,7 @@ private:
     std::string getUserInput(int index);
     void setupNewPlayers();
     bool validateInput(Validation validation);
-};
+    
+};  
 
 #endif // ASSIGN2_GAME_H

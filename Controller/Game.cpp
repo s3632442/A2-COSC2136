@@ -321,6 +321,16 @@ void Game::printScores()
               << player1->getScore() << std::endl;
     std::cout << "Score for " << player2->getName() << ": "
               << player2->getScore() << std::endl;
+    if (numToPlay == '3')
+    {
+        std::cout << "Score for " << player3->getName() << ": "
+                  << player3->getScore() << std::endl;
+    }
+    else if (numToPlay == '4')
+    {
+        std::cout << "Score for " << player4->getName() << ": "
+                  << player4->getScore() << std::endl;
+    }
 }
 
 void Game::printBoard()
@@ -348,13 +358,26 @@ void Game::promptForPlayInput()
 // https : // stackoverflow.com/questions/16276176/can-i-modify-the-target-of-a-pointer-passed-as-parameter
 void Game::printCurrentPlayer(Player *&whoseTurnItIs)
 {
-    if (*itIsPlayer1s_turn)
+
+    if (nextPlayer == 1)
     {
         whoseTurnItIs = this->player1;
+        nextPlayer =2;
     }
-    else
+    else if (nextPlayer == 2)
     {
         whoseTurnItIs = this->player2;
+        nextPlayer =3;
+    }
+    else if (nextPlayer == 3)
+    {
+        whoseTurnItIs = this->player3;
+        nextPlayer =4;
+    }
+    else if (nextPlayer == 4)
+    {
+        whoseTurnItIs = this->player4;
+        nextPlayer =2;
     }
     std::cout << whoseTurnItIs->getName() << ", it's your turn" << std::endl;
 }
@@ -625,7 +648,7 @@ void Game::setupNewPlayers()
     int playerNamesEntered = 0;
     int playersCount = 2;
     Player *currentPlayer = player1;
-    char numToPlay = '0';
+
     std::string playerPseudonym = "";
 
     do
