@@ -202,7 +202,7 @@ bool Game::play()
     do
     {
 
-        promptCurrentPlayer(currentPlayer);
+        printCurrentPlayer(currentPlayer);
         printScores();
         printBoard();
         printHand(currentPlayer);
@@ -346,7 +346,7 @@ void Game::promptForPlayInput()
 
 // 20220802
 // https : // stackoverflow.com/questions/16276176/can-i-modify-the-target-of-a-pointer-passed-as-parameter
-void Game::promptCurrentPlayer(Player *&whoseTurnItIs)
+void Game::printCurrentPlayer(Player *&whoseTurnItIs)
 {
     if (*itIsPlayer1s_turn)
     {
@@ -622,12 +622,11 @@ std::string Game::getUserInput()
 
 void Game::setupNewPlayers()
 {
-
+    int playerNamesEntered = 0;
     int playersCount = 2;
     Player *currentPlayer = player1;
     char numToPlay = '0';
-    int playerNamesEntered = 0;
-    playerPseudonym = new std::string("default");
+    std::string playerPseudonym = "";
 
     do
     {
@@ -635,24 +634,23 @@ void Game::setupNewPlayers()
         if (playerNamesEntered == 0)
         {
             currentPlayer = player1;
-            *playerPseudonym = "player 1";
-            
+            playerPseudonym = "player 1";
         }
         else if (playerNamesEntered == 1)
         {
             currentPlayer = player2;
-            *playerPseudonym = "player 2";
+            playerPseudonym = "player 2";
         }
         else if (playerNamesEntered == 2)
         {
             currentPlayer = player3;
-            *playerPseudonym = "player 3";
+            playerPseudonym = "player 3";
         }
         else if (playerNamesEntered == 3)
         {
 
             currentPlayer = player4;
-            *playerPseudonym = "player 4";
+            playerPseudonym = "player 4";
         }
         if (numToPlay == '0')
         {
@@ -665,18 +663,126 @@ void Game::setupNewPlayers()
         else if (numToPlay == '2')
         {
             playersCount = 2;
+
+            // Prompt for username
+            std::cout
+                << "Enter a name for " << playerPseudonym << " (uppercase characters only)"
+                << std::endl;
+            std::cout << "> ";
+
+            std::string player_name = "DEFAULT";
+            player_name = getUserInput();
+            if (player_name == "help")
+            {
+                std::cout << "---------HELP---------\nPlease enter a name for the first player and then press enter\nThen do the same for the second player\nAll names must be ALL CAPS not sure why but thats what we did and I dont have time to mess around fixing it\n";
+            }
+            else
+            {
+                bool nameIsValid = validation->playerNameValid(player_name);
+                if (nameIsValid)
+                {
+                    currentPlayer->setName(player_name);
+                    LinkedList *player_hand = currentPlayer->getHand();
+                    for (int i = 0; i < handTilecount; i++)
+                    {
+                        player_hand->addEnd(bag->removeFront());
+                    }
+
+                    *itIsPlayer1s_turn = !*itIsPlayer1s_turn;
+                    playerNamesEntered++;
+                }
+                else
+                {
+                    std::cout << "Username must be UPPERCASE characters, A to Z only" << std::endl;
+                }
+                std::cout << std::endl;
+                std::cout << std::endl;
+            }
         }
         else if (numToPlay == '3')
         {
             playersCount = 3;
+
+            // Prompt for username
+            std::cout
+                << "Enter a name for " << playerPseudonym << " (uppercase characters only)"
+                << std::endl;
+            std::cout << "> ";
+
+            std::string player_name = "DEFAULT";
+            player_name = getUserInput();
+            if (player_name == "help")
+            {
+                std::cout << "---------HELP---------\nPlease enter a name for the first player and then press enter\nThen do the same for the second player\nAll names must be ALL CAPS not sure why but thats what we did and I dont have time to mess around fixing it\n";
+            }
+            else
+            {
+                bool nameIsValid = validation->playerNameValid(player_name);
+                if (nameIsValid)
+                {
+                    currentPlayer->setName(player_name);
+                    LinkedList *player_hand = currentPlayer->getHand();
+                    for (int i = 0; i < handTilecount; i++)
+                    {
+                        player_hand->addEnd(bag->removeFront());
+                    }
+
+                    *itIsPlayer1s_turn = !*itIsPlayer1s_turn;
+                    playerNamesEntered++;
+                }
+                else
+                {
+                    std::cout << "Username must be UPPERCASE characters, A to Z only" << std::endl;
+                }
+                std::cout << std::endl;
+                std::cout << std::endl;
+            }
         }
         else if (numToPlay == '4')
         {
 
             playersCount = 4;
+
+            // Prompt for username
+            std::cout
+                << "Enter a name for " << playerPseudonym << " (uppercase characters only)"
+                << std::endl;
+            std::cout << "> ";
+
+            std::string player_name = "DEFAULT";
+            player_name = getUserInput();
+            if (player_name == "help")
+            {
+                std::cout << "---------HELP---------\nPlease enter a name for the first player and then press enter\nThen do the same for the second player\nAll names must be ALL CAPS not sure why but thats what we did and I dont have time to mess around fixing it\n";
+            }
+            else
+            {
+
+                bool nameIsValid = validation->playerNameValid(player_name);
+
+                if (nameIsValid)
+                {
+                    std::cout << player_name << std::endl;
+                    currentPlayer->setName(player_name);
+                    LinkedList *player_hand = currentPlayer->getHand();
+
+                    for (int i = 0; i < handTilecount; i++)
+                    {
+                        player_hand->addEnd(bag->removeFront());
+                    }
+
+                    *itIsPlayer1s_turn = !*itIsPlayer1s_turn;
+
+                    playerNamesEntered++;
+                }
+                else
+                {
+                    std::cout << "Username must be UPPERCASE characters, A to Z only" << std::endl;
+                }
+                std::cout << std::endl;
+                std::cout << std::endl;
+            }
         }
-        playerNamesEntered = createPlayer(playerPseudonym);
-        
     } while (playerNamesEntered < playersCount);
 }
 std::vector<std::string> Game::tokeniseInput()
@@ -699,46 +805,4 @@ std::vector<std::string> Game::tokeniseInput()
     }
     wordCount = tokenisedInput.size();
     return tokenisedInput;
-}
-
-int Game::createPlayer(std::string *playerTitle)
-{
-
-    
-    
-    // Prompt for username
-    std::cout
-        << "Enter a name for " << *playerTitle << " (uppercase characters only)"
-        << std::endl;
-    std::cout << "> ";
-
-    std::string player_name = "DEFAULT";
-    player_name = getUserInput();
-    if (player_name == "help")
-    {
-        std::cout << "---------HELP---------\nPlease enter a name for the first player and then press enter\nThen do the same for the second player\nAll names must be ALL CAPS not sure why but thats what we did and I dont have time to mess around fixing it\n";
-    }
-    else
-    {
-        bool nameIsValid = validation->playerNameValid(player_name);
-        if (nameIsValid)
-        {
-            currentPlayer->setName(player_name);
-            LinkedList *player_hand = currentPlayer->getHand();
-            for (int i = 0; i < handTilecount; i++)
-            {
-                player_hand->addEnd(bag->removeFront());
-            }
-
-            *itIsPlayer1s_turn = !*itIsPlayer1s_turn;
-            playerNum++;
-        }
-        else
-        {
-            std::cout << "Username must be UPPERCASE characters, A to Z only" << std::endl;
-        }
-        std::cout << std::endl;
-        std::cout << std::endl;
-    }
-    return playerNum;
 }
