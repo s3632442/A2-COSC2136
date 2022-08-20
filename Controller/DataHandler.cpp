@@ -27,7 +27,7 @@ bool DataHandler::loadData(std::string filename)
     this->filename = &filename;
     currentPlayerName = new std::string("");
     bag = new LinkedList;
-    board = new Board();
+    board = new Board(26, 26);
     player1 = new Player();
     player2 = new Player();
 
@@ -40,7 +40,6 @@ bool DataHandler::loadData(std::string filename)
     {
         gameData.push_back(line);
     }
-
 
     for (int i = 0; i < gameData.size(); i++)
     {
@@ -460,7 +459,7 @@ void DataHandler::fillPlayer2HandWithSavedTiles(LinkedList *&hand)
         while (temp != NULL)
         {
             temp = temp->getNext();
-            
+
             hand->addEnd(player2->getHand()->removeFront());
         }
     }
@@ -493,8 +492,6 @@ int DataHandler::getBoardWidth()
 
     return boardWidth;
 }
-
-int getBoardState() {}
 
 std::string DataHandler::getCurrentPlayerName()
 {

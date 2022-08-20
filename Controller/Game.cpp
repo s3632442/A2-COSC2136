@@ -127,7 +127,6 @@ bool Game::newGame()
     std::cout << std::endl;
 
     nextTurn = play();
-
     return nextTurn;
 }
 
@@ -208,7 +207,6 @@ bool Game::play()
         printBagTileCount();
         promptForPlayInput();
         nextTurn = takeTurn(currentPlayer);
-
         exiting = checkEndGameConditions(currentPlayer);
 
         if (exiting)
@@ -363,6 +361,7 @@ bool Game::takeTurn(Player *&whoseTurnItIs)
 {
 
     bool inputIsInvalid = true;
+    bool takeTurn = true;
     do
     {
 
@@ -370,7 +369,7 @@ bool Game::takeTurn(Player *&whoseTurnItIs)
 
         if (inputTokens.at(0)[1] == '0' && inputTokens.at(0)[0] == '/')
         {
-            inputIsInvalid = false;
+            takeTurn = false;
         }
         else if (inputTokens.at(0) == "help")
         {
@@ -426,7 +425,7 @@ bool Game::takeTurn(Player *&whoseTurnItIs)
                             whoseTurnItIs->getHand()->addEnd(bag->removeFront());
 
                             int playerScore = scoringSystem->countPoints(board, row, column);
-                            std::cout << "playerScore? " << playerScore << std::endl;
+                            std::cout << "playerScore: " << playerScore << std::endl;
                             whoseTurnItIs->addToScore(playerScore);
 
                             inputIsInvalid = false;
@@ -507,8 +506,9 @@ bool Game::takeTurn(Player *&whoseTurnItIs)
             prompt_invalidInput();
         }
 
-    } while (inputIsInvalid);
-    return inputIsInvalid;
+    } while (inputIsInvalid && takeTurn);
+
+    return takeTurn;
 }
 
 bool Game::getCharacter(char c)

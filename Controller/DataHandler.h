@@ -46,6 +46,7 @@ private:
     std::string boardShapeAsString(Board *&board);
     std::string setBoardStateAsString(Board *&board);
     std::string bagContentsAsString(LinkedList *&bag);
+    
 };
 
 #endif // ASSIGN2_DATAHANDLER_H
