@@ -98,21 +98,21 @@ bool Validation::checkEmptySpace(Tile *tile, Board *boardPointer, int rowAsInt, 
     if (boardPointer->getTileAt(rowAsInt, column) == nullptr)
     {
         char rowAsChar = rowAsInt + 65;
-        //std::cout << "tile is empty at: " << rowAsChar << column << std::endl;
-        //std::cout << "*now could place tile, if in hand, and valid tiles around it*" << std::endl;
-        // validateMove will check surrounding tiles to follow game rules
-        // this needs to be called from game, need to rework the return values so that methods in this class dont
-        // call other methods
+        // std::cout << "tile is empty at: " << rowAsChar << column << std::endl;
+        // std::cout << "*now could place tile, if in hand, and valid tiles around it*" << std::endl;
+        //  validateMove will check surrounding tiles to follow game rules
+        //  this needs to be called from game, need to rework the return values so that methods in this class dont
+        //  call other methods
 
         isEmptySpace = validateMove(boardPointer, rowAsInt, column, isEmptyBoard, tile);
     }
     else
     {
-        //std::cout << "tile is full" << std::endl;
+        // std::cout << "tile is full" << std::endl;
         isEmptySpace = false;
     }
 
-    //std::cout << "Validation::checkEmptySpace() returns " << isEmptySpace << std::endl;
+    // std::cout << "Validation::checkEmptySpace() returns " << isEmptySpace << std::endl;
 
     return isEmptySpace;
 };
@@ -124,12 +124,12 @@ bool Validation::checkFileExists(std::string fileName)
     file.open(fileName);
     if (file)
     {
-        //std::cout << "file exists" << std::endl;
+        // std::cout << "file exists" << std::endl;
         fileExists = true;
     }
     else
     {
-        //std::cout << "file doesn't exist" << std::endl;
+        // std::cout << "file doesn't exist" << std::endl;
         fileExists = false;
     }
 
@@ -171,9 +171,9 @@ bool Validation::validateMove(Board *boardPointer, int targetRow, int targetColu
 {
     // need to check up, down,left and right and look for valid placements of tile
     int rowElement = targetRow;
-    //std::cout << "Validation::validateMove targetRow: " << rowElement << std::endl;
+    // std::cout << "Validation::validateMove targetRow: " << rowElement << std::endl;
     int columnElement = targetColumn;
-    //std::cout << "Validation::validateMove targetColumn: " << columnElement << std::endl;
+    // std::cout << "Validation::validateMove targetColumn: " << columnElement << std::endl;
     int truths = 0;
     int falses = 0;
 
@@ -188,9 +188,9 @@ bool Validation::validateMove(Board *boardPointer, int targetRow, int targetColu
     }
     else
     {
-        //std::cout << rowElement << "  " << columnElement << std::endl;
-        // check adjacent tiles for valid move following rules
-        // if all adjacent tiles to proposed position are empty, you cannot place here (unless first move of game)
+        // std::cout << rowElement << "  " << columnElement << std::endl;
+        //  check adjacent tiles for valid move following rules
+        //  if all adjacent tiles to proposed position are empty, you cannot place here (unless first move of game)
         if (boardPointer->getTileAt(rowElement, columnElement + 1) == nullptr &&
             boardPointer->getTileAt(rowElement, columnElement - 1) == nullptr &&
             boardPointer->getTileAt(rowElement - 1, columnElement) == nullptr &&
@@ -205,7 +205,7 @@ bool Validation::validateMove(Board *boardPointer, int targetRow, int targetColu
             if (validateNorth(boardPointer, rowElement, columnElement, tileProposed))
             {
                 truths++;
-                //std::cout << "Validate north true" << std::endl;
+                // std::cout << "Validate north true" << std::endl;
             }
             else
             {
@@ -215,7 +215,7 @@ bool Validation::validateMove(Board *boardPointer, int targetRow, int targetColu
             if (validateSouth(boardPointer, rowElement, columnElement, tileProposed))
             {
                 truths++;
-                //std::cout << "Validate south true" << std::endl;
+                // std::cout << "Validate south true" << std::endl;
             }
             else
             {
@@ -225,7 +225,7 @@ bool Validation::validateMove(Board *boardPointer, int targetRow, int targetColu
             if (validateEast(boardPointer, rowElement, columnElement, tileProposed))
             {
                 truths++;
-                //std::cout << "Validate east true" << std::endl;
+                // std::cout << "Validate east true" << std::endl;
             }
             else
             {
@@ -235,31 +235,31 @@ bool Validation::validateMove(Board *boardPointer, int targetRow, int targetColu
             if (validateWest(boardPointer, rowElement, columnElement, tileProposed))
             {
                 truths++;
-                //std::cout << "Validate west true" << std::endl;
+                // std::cout << "Validate west true" << std::endl;
             }
             else
             {
                 falses++;
             }
 
-            //std::cout << "truths: " << truths << std::endl;
-            //std::cout << "falses: " << falses << std::endl;
+            // std::cout << "truths: " << truths << std::endl;
+            // std::cout << "falses: " << falses << std::endl;
 
             if (falses > 0)
             {
-                //std::cout << "Cannot place tile" << std::endl;
+                // std::cout << "Cannot place tile" << std::endl;
                 validity = false;
             }
             else
             {
                 // Let Game.cpp do the placeTileAt.
-                //boardPointer->placeTileAt(tileProposed, rowElement, columnElement);
+                // boardPointer->placeTileAt(tileProposed, rowElement, columnElement);
                 validity = true;
             }
         }
     }
 
-    //std::cout << "Validation::validateMove() returns " << validity << std::endl;
+    // std::cout << "Validation::validateMove() returns " << validity << std::endl;
     return validity;
 }
 
@@ -278,8 +278,8 @@ bool Validation::validateInputProposed(Tile *tile, Board *boardPointer, std::str
     // ie length of input must be 3. Example 'B15' or 'G23'
     if (length == 3)
     {
-        //std::cout << "Position Requested Row:" << positionRequested[0] << std::endl;
-        //std::cout << "Position Requested Col:" << positionRequested[1] << positionRequested[2] << std::endl;
+        // std::cout << "Position Requested Row:" << positionRequested[0] << std::endl;
+        // std::cout << "Position Requested Col:" << positionRequested[1] << positionRequested[2] << std::endl;
         row = positionRequested[0];
         if (isalpha(row))
         {
@@ -305,8 +305,8 @@ bool Validation::validateInputProposed(Tile *tile, Board *boardPointer, std::str
     }
     else
     {
-        //std::cout << "Position Requested Row:" << positionRequested[0] << std::endl;
-        //std::cout << "Position Requested Col:" << positionRequested[1] << std::endl;
+        // std::cout << "Position Requested Row:" << positionRequested[0] << std::endl;
+        // std::cout << "Position Requested Col:" << positionRequested[1] << std::endl;
         row = positionRequested[0];
         if (isalpha(row))
         {
@@ -330,16 +330,16 @@ bool Validation::validateInputProposed(Tile *tile, Board *boardPointer, std::str
     }
     // converting row char to number so we can use it in 2d vector as an element
     int rowAsInt = (row - 65);
-    //std::cout << "row as int: " << rowAsInt << std::endl;
-    // converting columnAsString which is string into int for column
+    // std::cout << "row as int: " << rowAsInt << std::endl;
+    //  converting columnAsString which is string into int for column
     column = std::stoi(columnAsString);
     if (inputWithinBounds(row, column))
     {
-        //std::cout << "TRUE: input within bounds" << std::endl;
+        // std::cout << "TRUE: input within bounds" << std::endl;
     }
     else
     {
-        //std::cout << "FALSE: input out of bounds" << std::endl;
+        // std::cout << "FALSE: input out of bounds" << std::endl;
         allowed = false;
     }
 
@@ -353,12 +353,12 @@ bool Validation::validateNorth(Board *boardPointer, int targetRow, int targetCol
 {
     Colour colour = tileProposed->getColour();
     Shape shape = tileProposed->getShape();
-    //std::cout << "targetRow: " << targetRow << std::endl;    // target row 13
-    //std::cout << "targetCol: " << targetColumn << std::endl; // target col 10
+    // std::cout << "targetRow: " << targetRow << std::endl;    // target row 13
+    // std::cout << "targetCol: " << targetColumn << std::endl; // target col 10
     char rowChar = targetRow + 65;
     // char colChar = targetColumn+48;
-    //std::cout << "Validation::validateNorth() tileProposed: " << colour << shape << std::endl; // accurate
-    //std::cout << "at targetRowColumn: " << rowChar << targetColumn << std::endl;
+    // std::cout << "Validation::validateNorth() tileProposed: " << colour << shape << std::endl; // accurate
+    // std::cout << "at targetRowColumn: " << rowChar << targetColumn << std::endl;
     // std::cout << "at targetRow: " << targetRow + 48 << std::endl;
 
     bool isAllowed = false;
@@ -494,7 +494,6 @@ bool Validation::checkAdjacentTilesRowLength(Board *board, int row, int column)
 
     return lengthIsAllowed;
 };
-
 
 bool Validation::checkBoardIsEmpty(Board *boardPointer)
 {

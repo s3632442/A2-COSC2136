@@ -21,7 +21,7 @@ public:
     // see if tile in hand
     bool validateTileChosen(LinkedList *, Tile *);
     // see if space is empty before trying to validate move by game rules
-    bool checkEmptySpace(Tile*, Board *, int, int);
+    bool checkEmptySpace(Tile *, Board *, int, int);
     // test in qwirkle.cpp
     // gets input from user as a string, string is used to make a file object and try to open this file.
     // if file cannot be read then the file doesnt exist and false is returned
@@ -30,7 +30,7 @@ public:
     // name needs to be uppercase, only letters, no numbers or symbols
     bool playerNameValid(std::string &);
     // validates the user input for a valid board position
-    bool validateInputProposed(Tile*, Board *, std::string);
+    bool validateInputProposed(Tile *, Board *, std::string);
     // validateMove will check surrounding tiles to follow game rules
     bool validateMove(Board *, int, int, bool, Tile *);
     bool validateNorth(Board *, int, int, Tile *);

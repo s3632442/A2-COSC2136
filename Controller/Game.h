@@ -27,6 +27,7 @@ const int COL_COUNT = 26;
 const char SPACE = ' ';
 const char DASH = '-';
 const char PIPE = '|';
+const int MINPLAYERS = 2;
 
 class Game
 {
@@ -38,11 +39,14 @@ public:
     bool loadGame();
     Player getCurentPlayer();
     std::vector<std::string> tokeniseInput();
+    void selectNumPlayers();
     
 
 private:
     Player *player1;
     Player *player2;
+    Player *player3;
+    Player *player4;
     Player *currentPlayer;
     Board *board;
     bool *itIsPlayer1s_turn;
@@ -52,6 +56,7 @@ private:
     Tile *tempTile;
     LinkedList *hand;
     bool nextTurn = true;
+    
     
     
 

@@ -9,6 +9,7 @@
 #include "../Model/Player.h"
 #include "../Model/LinkedList.h"
 
+
 class DataHandler
 {
 public:
@@ -33,6 +34,7 @@ public:
     int getBoardWidth();
     std::string getCurrentPlayerName();
     Board getBoard();
+    
 
 private:
     std::string *gameState;
@@ -42,11 +44,12 @@ private:
     Board *board;
     Player *player1;
     Player *player2;
+    Player *player3;
+    Player *player4;
     std::string handAsString(Player *&);
     std::string boardShapeAsString(Board *&board);
     std::string setBoardStateAsString(Board *&board);
     std::string bagContentsAsString(LinkedList *&bag);
-    
 };
 
 #endif // ASSIGN2_DATAHANDLER_H
