@@ -9,7 +9,6 @@
 #include <sstream>
 #include <random>
 
-
 #include "../Model/TileCodes.h"
 #include "../Model/Tile.h"
 #include "../Model/Board.h"
@@ -40,7 +39,7 @@ public:
     Player getCurentPlayer();
     std::vector<std::string> tokeniseInput();
     void selectNumPlayers();
-    
+    int createPlayer(std::string *playerTitle);
 
 private:
     Player *player1;
@@ -56,9 +55,8 @@ private:
     Tile *tempTile;
     LinkedList *hand;
     bool nextTurn = true;
-    
-    
-    
+    std::string *playerPseudonym;
+    int playerNum = 0;
 
     std::string *c;
     bool *isChar;
@@ -74,7 +72,7 @@ private:
     void printScores();
     void printBoard();
     void promptForPlayInput();
-    void printCurrentPlayer(Player *&);
+    void promptCurrentPlayer(Player *&);
     bool takeTurn(Player *&);
     bool checkEndGameConditions(Player *&);
     void printBagTileCount();
