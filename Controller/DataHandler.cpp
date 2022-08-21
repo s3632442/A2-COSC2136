@@ -127,8 +127,9 @@ bool DataHandler::loadData(std::string filename)
 
             player2->setHand(player2_hand);
         }
-        if (getNumToPlayLoaded() == '3')
+        else if (getNumToPlayLoaded() == '3')
         {
+
             if (i == 7)
             {
                 player3->setName(gameData.at(i));
@@ -192,7 +193,7 @@ bool DataHandler::loadData(std::string filename)
                 }
 
                 int tileCount = tilesInHandAsStrings.size();
-                LinkedList *player3_hand = player3->getHand();
+                LinkedList *player4_hand = player4->getHand();
 
                 char row = 0;
                 int col = 0;
@@ -242,13 +243,12 @@ bool DataHandler::loadData(std::string filename)
                 currentPlayerName = &gameData.at(i);
             }
         }
-        if (getNumToPlayLoaded() == '4')
+        else if (getNumToPlayLoaded() == '4')
         {
-            
+
             if (i == 7)
             {
                 player3->setName(gameData.at(i));
-                
             }
             if (i == 8)
             {
@@ -402,6 +402,7 @@ bool DataHandler::loadData(std::string filename)
         }
         else
         {
+
             if (i == 7)
             {
                 // To Do. Board height and width.
