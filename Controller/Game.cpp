@@ -152,6 +152,8 @@ bool Game::loadGame()
         DataHandler dataHandler;
         dataHandler.loadData(filename);
 
+        numToPlay = dataHandler.getNumToPlayLoaded();
+
         // Get Player1 and Player2 info
         player1->setName(dataHandler.getPlayer1Name());
         player1->setScore(dataHandler.getPlayer1Score());
@@ -391,21 +393,29 @@ void Game::printCurrentPlayer(Player *&whoseTurnItIs)
     }
     else if (nextPlayer == 2)
     {
-        if(*numToPlay == '2'){
-        whoseTurnItIs = this->player1;
-        nextPlayer = 1;    
-        }else{
-        whoseTurnItIs = this->player2;
-        nextPlayer = 3;}
+        if (*numToPlay == '2')
+        {
+            whoseTurnItIs = this->player1;
+            nextPlayer = 1;
+        }
+        else
+        {
+            whoseTurnItIs = this->player2;
+            nextPlayer = 3;
+        }
     }
     else if (nextPlayer == 3)
     {
-        if(*numToPlay == '3'){
-        whoseTurnItIs = this->player1;
-        nextPlayer = 1;    
-        }else{
-        whoseTurnItIs = this->player3;
-        nextPlayer = 4;}
+        if (*numToPlay == '3')
+        {
+            whoseTurnItIs = this->player1;
+            nextPlayer = 1;
+        }
+        else
+        {
+            whoseTurnItIs = this->player3;
+            nextPlayer = 4;
+        }
     }
     else if (nextPlayer == 4)
     {
