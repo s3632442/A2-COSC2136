@@ -25,11 +25,13 @@ bool DataHandler::loadData(std::string filename)
 {
 
     this->filename = &filename;
+    numToPlay = new char();
     currentPlayerName = new std::string("");
     bag = new LinkedList;
     board = new Board(26, 26);
     player1 = new Player();
     player2 = new Player();
+    Game g = Game();
 
     std::string line;
     std::vector<std::string> gameData;
@@ -45,13 +47,18 @@ bool DataHandler::loadData(std::string filename)
     {
         if (i == 0)
         {
-            player1->setName(gameData.at(i));
+
+            g.setNumToPlay(gameData.at(i)[0]);
         }
         else if (i == 1)
         {
-            player1->setScore(std::stoi(gameData.at(i)));
+            player1->setName(gameData.at(i));
         }
         else if (i == 2)
+        {
+            player1->setScore(std::stoi(gameData.at(i)));
+        }
+        else if (i == 3)
         {
             // 20220807
             // https://stackoverflow.com/questions/236129/how-do-i-iterate-over-the-words-of-a-string
@@ -84,15 +91,15 @@ bool DataHandler::loadData(std::string filename)
                 player1_hand->addEnd(tile);
             }
         }
-        else if (i == 3)
+        else if (i == 4)
         {
             player2->setName(gameData.at(i));
         }
-        else if (i == 4)
+        else if (i == 5)
         {
             player2->setScore(std::stoi(gameData.at(i)));
         }
-        else if (i == 5)
+        else if (i == 6)
         {
             // To Do. Parse player2 hand
             std::vector<std::string> tilesInHandAsStrings;
@@ -124,12 +131,12 @@ bool DataHandler::loadData(std::string filename)
 
             player2->setHand(player2_hand);
         }
-        else if (i == 6)
+        else if (i == 7)
         {
             // To Do. Board height and width.
             board = new Board(getBoardHeight(), getBoardWidth());
         }
-        else if (i == 7)
+        else if (i == 8)
         {
             std::vector<std::string> tilesInHandAsStrings;
             char *str = const_cast<char *>(gameData.at(i).c_str());
@@ -164,7 +171,7 @@ bool DataHandler::loadData(std::string filename)
                 board->placeTileAt(tile, row, col);
             }
         }
-        else if (i == 8)
+        else if (i == 9)
         {
             // ToDo: bag.addEnd(everyParsedTile)
             std::vector<std::string> tilesInBagAsStrings;
@@ -192,7 +199,7 @@ bool DataHandler::loadData(std::string filename)
                 bag->addEnd(tile);
             }
         }
-        else if (i == 9)
+        else if (i == 10)
         {
             currentPlayerName = &gameData.at(i);
         }
@@ -214,15 +221,37 @@ Board DataHandler::getBoard()
 // Saves data to a file & from relevent variables
 //  assumtion is that the data is in the correct format file is in a valid format
 // file needs to be opened or created
-bool DataHandler::saveData()
+bool DataHandler::saveData(char *&players)
 {
+
+    //std::cout << player3->getName().length() << "\n";
+    
     std::ofstream outputFile(*filename);
+    std::string numToPlayString = "";
+    numToPlayString.append(1, *players);
+    outputFile << numToPlayString << std::endl;
     outputFile << player1->getName() << std::endl;
     outputFile << player1->getScore() << std::endl;
     outputFile << handAsString(player1) << std::endl;
     outputFile << player2->getName() << std::endl;
     outputFile << player2->getScore() << std::endl;
     outputFile << handAsString(player2) << std::endl;
+    if (*players == '3')
+    {
+        outputFile << player3->getName() << std::endl;
+        outputFile << player3->getScore() << std::endl;
+        outputFile << handAsString(player3) << std::endl;
+    }
+    else if (*players == '4')
+    {
+
+        outputFile << player3->getName() << std::endl;
+        outputFile << player3->getScore() << std::endl;
+        outputFile << handAsString(player3) << std::endl;
+        outputFile << player4->getName() << std::endl;
+        outputFile << player4->getScore() << std::endl;
+        outputFile << handAsString(player4) << std::endl;
+    }
     outputFile << boardShapeAsString(board) << std::endl;
     outputFile << setBoardStateAsString(board) << std::endl;
     outputFile << bagContentsAsString(bag) << std::endl;
@@ -230,7 +259,8 @@ bool DataHandler::saveData()
 
     outputFile.close();
 
-    loadData(*filename);
+    // loadData(*filename);
+
     return true;
 }
 
@@ -244,6 +274,15 @@ void DataHandler::setPlayer2(Player *&player2)
     this->player2 = player2;
 }
 
+void DataHandler::setPlayer3(Player *&player3)
+{
+    this->player3 = player3;
+}
+
+void DataHandler::setPlayer4(Player *&player4)
+{
+    this->player4 = player4;
+}
 void DataHandler::setBoard(Board *&board)
 {
     this->board = board;
@@ -262,6 +301,11 @@ void DataHandler::setCurrentPlayerName(std::string *&currentPlayerName)
 void DataHandler::setFilename(std::string *&filename)
 {
     this->filename = filename;
+}
+void DataHandler::setNumToPlay(char *&numToPlay)
+{
+
+    this->numToPlay = numToPlay;
 }
 
 std::string DataHandler::handAsString(Player *&player)
@@ -430,6 +474,26 @@ std::string DataHandler::getPlayer2Name()
 
     return player2name;
 }
+std::string DataHandler::getPlayer4Name()
+{
+    std::string player4name = "";
+    if (player4 != nullptr)
+    {
+        player4name = player4->getName();
+    }
+
+    return player4name;
+}
+std::string DataHandler::getPlayer3Name()
+{
+    std::string player3name = "";
+    if (player3 != nullptr)
+    {
+        player3name = player3->getName();
+    }
+
+    return player3name;
+}
 
 void DataHandler::fillBagWithSavedTiles(LinkedList *&bag)
 {
@@ -464,6 +528,34 @@ void DataHandler::fillPlayer2HandWithSavedTiles(LinkedList *&hand)
         }
     }
 }
+void DataHandler::fillPlayer3HandWithSavedTiles(LinkedList *&hand)
+{
+    Node *temp = player3->getHand()->getHead();
+
+    if (temp != NULL)
+    {
+        while (temp != NULL)
+        {
+            temp = temp->getNext();
+
+            hand->addEnd(player3->getHand()->removeFront());
+        }
+    }
+}
+void DataHandler::fillPlayer4HandWithSavedTiles(LinkedList *&hand)
+{
+    Node *temp = player4->getHand()->getHead();
+
+    if (temp != NULL)
+    {
+        while (temp != NULL)
+        {
+            temp = temp->getNext();
+
+            hand->addEnd(player4->getHand()->removeFront());
+        }
+    }
+}
 
 int DataHandler::getPlayer1Score()
 {
@@ -475,6 +567,18 @@ int DataHandler::getPlayer2Score()
 {
     int player2_score = this->player2->getScore();
     return player2_score;
+}
+
+int DataHandler::getPlayer3Score()
+{
+    int player3_score = this->player3->getScore();
+    return player3_score;
+}
+
+int DataHandler::getPlayer4Score()
+{
+    int player4_score = this->player4->getScore();
+    return player4_score;
 }
 
 int DataHandler::getBoardHeight()

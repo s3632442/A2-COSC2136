@@ -24,6 +24,7 @@ Game::Game()
     this->bag = new LinkedList();
     this->validation = new Validation();
     this->scoringSystem = new ScoringSystem();
+    this->numToPlay = new char('0');
 }
 
 Game::~Game()
@@ -34,6 +35,10 @@ Game::~Game()
     player1 = nullptr;
     delete player2;
     player2 = nullptr;
+    delete player3;
+    player3 = nullptr;
+    delete player4;
+    player4 = nullptr;
     delete currentPlayer;
     currentPlayer = nullptr;
     delete board;
@@ -121,8 +126,10 @@ std::string Game::getBoardAsString()
 // Setup bag, player1 and player2
 bool Game::newGame()
 {
+
     // New Tiles
     fillBagAndShuffle();
+
     setupNewPlayers();
 
     std::cout << "Let's Play!" << std::endl;
@@ -155,6 +162,22 @@ bool Game::loadGame()
         player2->setScore(dataHandler.getPlayer2Score());
         LinkedList *player2Hand = player2->getHand();
         dataHandler.fillPlayer2HandWithSavedTiles(player2Hand);
+
+        if (*numToPlay == '3')
+        {
+            player3->setName(dataHandler.getPlayer3Name());
+            player3->setScore(dataHandler.getPlayer3Score());
+            LinkedList *player3Hand = player3->getHand();
+            dataHandler.fillPlayer3HandWithSavedTiles(player3Hand);
+        }
+        else if (*numToPlay == '4')
+        {
+
+            player4->setName(dataHandler.getPlayer4Name());
+            player4->setScore(dataHandler.getPlayer4Score());
+            LinkedList *player4Hand = player4->getHand();
+            dataHandler.fillPlayer4HandWithSavedTiles(player4Hand);
+        }
 
         // Get tiles for bag
         dataHandler.fillBagWithSavedTiles(bag);
@@ -321,12 +344,12 @@ void Game::printScores()
               << player1->getScore() << std::endl;
     std::cout << "Score for " << player2->getName() << ": "
               << player2->getScore() << std::endl;
-    if (numToPlay == '3')
+    if (*numToPlay == '3')
     {
         std::cout << "Score for " << player3->getName() << ": "
                   << player3->getScore() << std::endl;
     }
-    else if (numToPlay == '4')
+    else if (*numToPlay == '4')
     {
         std::cout << "Score for " << player3->getName() << ": "
                   << player3->getScore() << std::endl;
@@ -368,13 +391,21 @@ void Game::printCurrentPlayer(Player *&whoseTurnItIs)
     }
     else if (nextPlayer == 2)
     {
+        if(*numToPlay == '2'){
+        whoseTurnItIs = this->player1;
+        nextPlayer = 1;    
+        }else{
         whoseTurnItIs = this->player2;
-        nextPlayer = 3;
+        nextPlayer = 3;}
     }
     else if (nextPlayer == 3)
     {
+        if(*numToPlay == '3'){
+        whoseTurnItIs = this->player1;
+        nextPlayer = 1;    
+        }else{
         whoseTurnItIs = this->player3;
-        nextPlayer = 4;
+        nextPlayer = 4;}
     }
     else if (nextPlayer == 4)
     {
@@ -573,6 +604,8 @@ void Game::saveGame(std::string *&filename)
 {
     DataHandler dataHandler;
     std::string *currentPlayerName = new std::string("");
+
+    dataHandler.setNumToPlay(numToPlay);
     if (*itIsPlayer1s_turn)
     {
         *currentPlayerName = this->player1->getName();
@@ -583,11 +616,21 @@ void Game::saveGame(std::string *&filename)
     }
     dataHandler.setPlayer1(player1);
     dataHandler.setPlayer2(player2);
+    if (*numToPlay == '3')
+    {
+        dataHandler.setPlayer3(player3);
+    }
+    else if (*numToPlay == '4')
+    {
+        dataHandler.setPlayer3(player3);
+        dataHandler.setPlayer4(player4);
+    }
+
     dataHandler.setBoard(board);
     dataHandler.setBag(bag);
     dataHandler.setCurrentPlayerName(currentPlayerName);
     dataHandler.setFilename(filename);
-    dataHandler.saveData();
+    dataHandler.saveData(numToPlay);
 }
 
 // Get a sentence worth of user input. Returns nullptr if EOF.
@@ -677,15 +720,15 @@ void Game::setupNewPlayers()
             currentPlayer = player4;
             playerPseudonym = "player 4";
         }
-        if (numToPlay == '0')
+        if (*numToPlay == '0')
         {
             std::cout
                 << "How many people will play? (2-4)"
                 << std::endl;
             std::cout << "> ";
-            numToPlay = tokeniseInput().at(0)[0];
+            *numToPlay = tokeniseInput().at(0)[0];
         }
-        else if (numToPlay == '2')
+        else if (*numToPlay == '2')
         {
             playersCount = 2;
 
@@ -724,7 +767,7 @@ void Game::setupNewPlayers()
                 std::cout << std::endl;
             }
         }
-        else if (numToPlay == '3')
+        else if (*numToPlay == '3')
         {
             playersCount = 3;
 
@@ -763,7 +806,7 @@ void Game::setupNewPlayers()
                 std::cout << std::endl;
             }
         }
-        else if (numToPlay == '4')
+        else if (*numToPlay == '4')
         {
 
             playersCount = 4;
@@ -831,3 +874,12 @@ std::vector<std::string> Game::tokeniseInput()
     wordCount = tokenisedInput.size();
     return tokenisedInput;
 }
+
+char Game::getNumToPlay()
+{
+    return *numToPlay;
+};
+void Game::setNumToPlay(char numToPlay)
+{
+    *this->numToPlay = numToPlay;
+};

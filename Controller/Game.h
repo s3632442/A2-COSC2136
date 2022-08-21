@@ -40,6 +40,8 @@ public:
     Player getCurentPlayer();
     std::vector<std::string> tokeniseInput();
     void selectNumPlayers();
+    char getNumToPlay();
+    void setNumToPlay(char numToPlay);
     
 
 private:
@@ -56,7 +58,7 @@ private:
     Tile *tempTile;
     LinkedList *hand;
     bool nextTurn = true;
-    char numToPlay = '0';
+    char *numToPlay;
     int nextPlayer = 1;
 
     
