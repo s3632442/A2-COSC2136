@@ -224,8 +224,8 @@ Board DataHandler::getBoard()
 bool DataHandler::saveData(char *&players)
 {
 
-    //std::cout << player3->getName().length() << "\n";
-    
+    // std::cout << player3->getName().length() << "\n";
+
     std::ofstream outputFile(*filename);
     std::string numToPlayString = "";
     numToPlayString.append(1, *players);
