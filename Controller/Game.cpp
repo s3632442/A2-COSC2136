@@ -152,7 +152,7 @@ bool Game::loadGame()
         DataHandler dataHandler;
         dataHandler.loadData(filename);
 
-        numToPlay = dataHandler.getNumToPlayLoaded();
+        *numToPlay = dataHandler.getNumToPlayLoaded();
 
         // Get Player1 and Player2 info
         player1->setName(dataHandler.getPlayer1Name());
@@ -615,7 +615,7 @@ void Game::saveGame(std::string *&filename)
     DataHandler dataHandler;
     std::string *currentPlayerName = new std::string("");
 
-    dataHandler.setNumToPlay(numToPlay);
+    dataHandler.setNumToPlay(*numToPlay);
     if (*itIsPlayer1s_turn)
     {
         *currentPlayerName = this->player1->getName();

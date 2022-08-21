@@ -16,11 +16,12 @@ public:
     ~DataHandler();
     bool loadData(std::string);
     bool saveData(char *&players);
-    void setNumToPlay(char *&numberOfPlayers);
+    void setNumToPlay(char numberOfPlayers);
     void setPlayer1(Player *&player1);
     void setPlayer2(Player *&player2);
     void setPlayer3(Player *&player3);
     void setPlayer4(Player *&player4);
+    char getNumToPlayLoaded();
     void setBoard(Board *&board);
     void setBag(LinkedList *&bag);
     void setCurrentPlayerName(std::string *&currentPlayerName);
@@ -42,6 +43,7 @@ public:
     int getBoardWidth();
     std::string getCurrentPlayerName();
     Board getBoard();
+    
 
 private:
     std::string *gameState;
@@ -57,7 +59,7 @@ private:
     std::string boardShapeAsString(Board *&board);
     std::string setBoardStateAsString(Board *&board);
     std::string bagContentsAsString(LinkedList *&bag);
-    char *numToPlay;
+    char *numToPlayLoaded;
     
 };
 
