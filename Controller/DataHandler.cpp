@@ -31,6 +31,8 @@ bool DataHandler::loadData(std::string filename)
     board = new Board(26, 26);
     player1 = new Player();
     player2 = new Player();
+    player3 = new Player();
+    player4 = new Player();
 
     std::string line;
     std::vector<std::string> gameData;
@@ -125,7 +127,7 @@ bool DataHandler::loadData(std::string filename)
 
             player2->setHand(player2_hand);
         }
-        if (*numToPlayLoaded == 3)
+        if (getNumToPlayLoaded() == '3')
         {
             if (i == 7)
             {
@@ -240,7 +242,7 @@ bool DataHandler::loadData(std::string filename)
                 currentPlayerName = &gameData.at(i);
             }
         }
-        else if (*numToPlayLoaded == 4)
+        else if (getNumToPlayLoaded() == '4')
         {
             if (i == 7)
             {
