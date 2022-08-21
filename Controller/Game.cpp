@@ -174,7 +174,10 @@ bool Game::loadGame()
         }
         else if (*numToPlay == '4')
         {
-
+            player3->setName(dataHandler.getPlayer3Name());
+            player3->setScore(dataHandler.getPlayer3Score());
+            LinkedList *player3Hand = player3->getHand();
+            dataHandler.fillPlayer3HandWithSavedTiles(player3Hand);
             player4->setName(dataHandler.getPlayer4Name());
             player4->setScore(dataHandler.getPlayer4Score());
             LinkedList *player4Hand = player4->getHand();

@@ -242,11 +242,13 @@ bool DataHandler::loadData(std::string filename)
                 currentPlayerName = &gameData.at(i);
             }
         }
-        else if (getNumToPlayLoaded() == '4')
+        if (getNumToPlayLoaded() == '4')
         {
+            
             if (i == 7)
             {
                 player3->setName(gameData.at(i));
+                
             }
             if (i == 8)
             {
